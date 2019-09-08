@@ -19,3 +19,4 @@ Take pictures of your receipts, name them in a specific format, then execute thi
 3. Create the expense report
 
     `npm start "myemail@credera.com" "MyPassword" "./path/to/receipts/folder"`
+    
