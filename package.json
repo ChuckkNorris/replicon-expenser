@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "run": "node ./replicon-expenser.js",
+    "start": "node ./src/replicon-expenser.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

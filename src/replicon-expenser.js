@@ -150,6 +150,7 @@ const fileExpenseReport = async (receipts, email, password) => {
     const allTabs = await browser.pages();
     const nextTab = allTabs[allTabs.length - 1];
     const repliconPage = helpers.setPuppetPage(nextTab);
+    repliconPage.waitFor(500);
     await repliconPage.waitForSelector('a[href="/Credera/my/expenses/"]');
     await createNewExpenseReport(repliconPage, receipts);
   })
