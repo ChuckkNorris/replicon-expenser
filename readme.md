@@ -14,7 +14,7 @@ Take pictures of your receipts, name them in a specific format, then execute thi
    ```
    2019-09-06_Meal_Dinner_Elways_$13.22.png
    YYYY-MM-DD_{MealType}_{Purpose}_{Place}_{Amount}.png
-   MealTypes = ['Travel', 'Meal']
+   MealTypes = ['Travel', 'Meal', 'Training']
    ```
 
 4. Create the expense report
