@@ -7,6 +7,7 @@ const moment = require("moment");
 const slash = require("slash");
 
 const TEMP_DESCRIPTION = "Test Description CHANGE";
+const TEMP_PROJECT = "Training";
 
 const loginToReplicon = async (page, email, password) => {
   const myAppsUrl = "https://myapps.microsoft.com";
@@ -132,7 +133,6 @@ const getReceipts = async directoryPath => {
     const amountWithExt =
       amountStr[0] === "$" ? amountStr.substring(1) : amountStr;
     const amount = amountWithExt.substring(0, amountWithExt.lastIndexOf("."));
-    console.log(amount);
     receipts.push({
       path: fullPath,
       date,
@@ -145,7 +145,7 @@ const getReceipts = async directoryPath => {
   return receipts;
 };
 
-const createNewExpenseReport = async (page, receipts) => {
+const createNewExpenseReport = async (page, receipts, description, project) => {
   // Click Expense Report Tab
   await page.clickAndWaitSelector(
     'a[href="/Credera/my/expenses/"]',
@@ -153,7 +153,15 @@ const createNewExpenseReport = async (page, receipts) => {
   );
   // Create New Expense Report
   await page.clickAndWaitSelector("#addNewExpenseButton", "#date_n0");
-  await page.setValue("#expenseDescription", TEMP_DESCRIPTION);
+  await page.setValue("#expenseDescription", description);
+  await page.clickAndWaitSelector(
+    "#searchDDLabel_expenseProject_n0",
+    '[aria-label="Type to Search"]'
+  );
+  await page.setValue('[aria-label="Type to Search"]', project);
+  await page.waitFor(1000);
+  await page.keyboard.type("\n");
+  await page.keyboard.type("\n");
   for (const [index, receipt] of receipts.entries()) {
     const rowId = `n${index}`;
     const dateRowSel = `#date_${rowId}`;
@@ -163,10 +171,16 @@ const createNewExpenseReport = async (page, receipts) => {
     }
     await addExpense(page, receipt, rowId);
   }
-  // await page.click(`button[title="Save"]`)
+  await page.click(`button[title="Save"]`);
 };
 
-const fileExpenseReport = async (receipts, email, password) => {
+const fileExpenseReport = async (
+  receipts,
+  email,
+  password,
+  description,
+  project
+) => {
   const { page, browser } = await helpers.createPuppetPage();
   browser.on("targetcreated", async function() {
     console.log("Tab Count: ", (await browser.pages()).length);
@@ -175,16 +189,26 @@ const fileExpenseReport = async (receipts, email, password) => {
     const repliconPage = helpers.setPuppetPage(nextTab);
     repliconPage.waitFor(500);
     await repliconPage.waitForSelector('a[href="/Credera/my/expenses/"]');
-    await createNewExpenseReport(repliconPage, receipts);
+    await createNewExpenseReport(repliconPage, receipts, description, project);
+    await page.waitFor(500);
+    await browser.close();
   });
 
   await loginToReplicon(page, email, password);
 };
 
 const main = async () => {
-  const [a, b, email, password, receiptsPath] = process.argv;
+  const [
+    a,
+    b,
+    email,
+    password,
+    receiptsPath,
+    description,
+    project
+  ] = process.argv;
   // Name receipts as: '2019-09-05_Travel_Lunch_Chipotle_$23.65.png'
   const receipts = await getReceipts(receiptsPath);
-  await fileExpenseReport(receipts, email, password);
+  await fileExpenseReport(receipts, email, password, description, project);
 };
 main();
