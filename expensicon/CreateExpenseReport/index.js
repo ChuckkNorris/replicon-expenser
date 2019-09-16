@@ -2,9 +2,8 @@ const multipart = require('./multipart');
 const path = require('path');
 const fs = require('fs');
 const repliconExpenser = require('./replicon-expenser');
-const atob = require('atob');
-
 const isLocal = !process.env['WEBSITE_INSTANCE_ID'];
+
 const AZURE_TEMP_FILES_DIR = isLocal ? './receipt-images' : 'D:/local/Temp';
 
 const getFormParts = (req) => {
@@ -32,13 +31,12 @@ const writeImagesToOutputDir = async (formParts) => {
 
 module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger function processed a request.');
+    context.log(context);
+    context.log(req);
     const formParts = getFormParts(req);
     const params = formParts.reduce((prev, next) => {
       if (next.name) {
         prev[next.name] = next.data;
-      }
-      if (next.name === 'password') {
-        prev[next.name] = atob(next.data);
       }
       return prev;
     }, {});
@@ -50,7 +48,7 @@ module.exports = async function (context, req) {
 
     context.res = {
       status: 200,
-      body: { message: "Upload complete" },
+      body: { fileNames },
       headers: {
         'Content-Type': 'application/json'
       }
