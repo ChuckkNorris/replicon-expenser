@@ -82,7 +82,7 @@ const setPuppetPage = page => {
   });
 };
 
-const createPuppetPage = async (headless = true) => {
+const createPuppetPage = async (headless = false) => {
   console.log("Opening browser...");
   const browser = await puppeteer.launch({ headless });
   console.log("Opening new page...");
