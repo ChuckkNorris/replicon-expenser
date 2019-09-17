@@ -168,11 +168,20 @@ const createNewExpenseReport = async (
   var clientFound = false;
   for (const cp of clientProjects) {
     const cpText = await (await cp.getProperty("innerText")).jsonValue();
+    const parentDiv = await (await (await (await (await cp.getProperty(
+      "parentElement"
+    )).getProperty("parentElement")).getProperty("parentElement")).getProperty(
+      "className"
+    )).jsonValue();
     if (
-      (!clientFound && cpText === client) ||
-      (clientFound && cpText === project)
+      (!clientFound &&
+        cpText.indexOf(client) >= 0 &&
+        parentDiv === "listArea activeArea overthrow") ||
+      (clientFound &&
+        cpText.indexOf(project) >= 0 &&
+        parentDiv === "subListArea overthrow")
     ) {
-      if (!clientFound && cpText === client) clientFound = true;
+      if (!clientFound) clientFound = true;
       const cpHTML = await (await cp.getProperty("outerHTML")).jsonValue();
       const cpValue = cpHTML.substring(
         cpHTML.indexOf("value") + 7,
