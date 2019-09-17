@@ -84,7 +84,8 @@ const setPuppetPage = page => {
 
 const createPuppetPage = async (headless = true) => {
   console.log("Opening browser...");
-  const browser = await puppeteer.launch({ headless });
+  // executablePath: 'google-chrome-unstable', 
+  const browser = await puppeteer.launch({ headless, args: [ '--no-sandbox', '--disable-setuid-sandbox' ] });
   console.log("Opening new page...");
   const tabs = await browser.pages();
   if (tabs.length > 0) {

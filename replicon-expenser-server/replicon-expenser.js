@@ -167,6 +167,8 @@ const createRepliconExpenser = (context) => {
       context.log(`Dialog opened with message: ${message}`);
       if (message.indexOf('date of the expense')) {
         context.log("It's a date error dialog... ignore if date is inside project date");
+      } else {
+        throw message;
       }
       await dialog.dismiss();
     });
@@ -242,16 +244,6 @@ const createRepliconExpenser = (context) => {
     await onTabCreatedAsync(browser, page, receipts, description, project);
   };
 
-  const getPuppetDirs = () => {
-    const puppetDir = './node_modules/puppeteer/.local-chromium/';
-    if (fs.existsSync(puppetDir)) {
-      const dirs = fs.readdirSync(puppetDir);
-      context.log(dirs);
-    } else {
-      context.log(`Puppet dir doesn't exist at: '${puppetDir}'`);
-    }
- }
-
   const createRepliconExpenseReport = async (expenseDetails) => {
     const {
       email,
@@ -260,7 +252,6 @@ const createRepliconExpenser = (context) => {
       description,
       project
     } = expenseDetails;
-    getPuppetDirs();
     context.log('Getting Receipts from : ', receiptsPath);
     const receipts = await getReceipts(receiptsPath);
     context.log(`Filing expense report...`)
