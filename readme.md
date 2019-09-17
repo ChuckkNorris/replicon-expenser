@@ -19,4 +19,6 @@ Take pictures of your receipts, name them in a specific format, then execute thi
 
 4. Create the expense report
 
-   `npm start "myemail@credera.com" "MyPassword" "./path/to/receipts/folder" "Expense Description" "Project Name"`
+   `npm start "myemail@credera.com" "MyPassword" "./path/to/receipts/folder" "Expense Description" "Client Name" "Project Name"`
+
+   Script requires Credera account username/password, path to receipts folder, description for expense report, client name, and project name. Can input substring of client name and project name. If there are multiple clients/projects that match the input substring, the first will be selected

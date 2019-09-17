@@ -6,9 +6,6 @@ const process = require("process");
 const moment = require("moment");
 const slash = require("slash");
 
-const TEMP_DESCRIPTION = "Test Description CHANGE";
-const TEMP_PROJECT = "Training";
-
 const loginToReplicon = async (page, email, password) => {
   const myAppsUrl = "https://myapps.microsoft.com";
   await page.goToAndWaitNetwork("https://myapps.microsoft.com");
@@ -145,7 +142,13 @@ const getReceipts = async directoryPath => {
   return receipts;
 };
 
-const createNewExpenseReport = async (page, receipts, description, project) => {
+const createNewExpenseReport = async (
+  page,
+  receipts,
+  description,
+  client,
+  project
+) => {
   // Click Expense Report Tab
   await page.clickAndWaitSelector(
     'a[href="/Credera/my/expenses/"]',
@@ -154,14 +157,40 @@ const createNewExpenseReport = async (page, receipts, description, project) => {
   // Create New Expense Report
   await page.clickAndWaitSelector("#addNewExpenseButton", "#date_n0");
   await page.setValue("#expenseDescription", description);
+
   await page.clickAndWaitSelector(
     "#searchDDLabel_expenseProject_n0",
     '[aria-label="Type to Search"]'
   );
-  await page.setValue('[aria-label="Type to Search"]', project);
   await page.waitFor(1000);
-  await page.keyboard.type("\n");
-  await page.keyboard.type("\n");
+
+  const clientProjects = await page.$$("a[value]");
+  var clientFound = false;
+  for (const cp of clientProjects) {
+    const cpText = await (await cp.getProperty("innerText")).jsonValue();
+    const parentDiv = await (await (await (await (await cp.getProperty(
+      "parentElement"
+    )).getProperty("parentElement")).getProperty("parentElement")).getProperty(
+      "className"
+    )).jsonValue();
+    if (
+      (!clientFound &&
+        cpText.indexOf(client) >= 0 &&
+        parentDiv === "listArea activeArea overthrow") ||
+      (clientFound &&
+        cpText.indexOf(project) >= 0 &&
+        parentDiv === "subListArea overthrow")
+    ) {
+      if (!clientFound) clientFound = true;
+      const cpHTML = await (await cp.getProperty("outerHTML")).jsonValue();
+      const cpValue = cpHTML.substring(
+        cpHTML.indexOf("value") + 7,
+        cpHTML.indexOf(">") - 1
+      );
+      await page.clickAndWaitSelector("[value='" + cpValue + "']", "#date_n0");
+    }
+  }
+
   for (const [index, receipt] of receipts.entries()) {
     const rowId = `n${index}`;
     const dateRowSel = `#date_${rowId}`;
@@ -179,6 +208,7 @@ const fileExpenseReport = async (
   email,
   password,
   description,
+  client,
   project
 ) => {
   const { page, browser } = await helpers.createPuppetPage();
@@ -189,7 +219,13 @@ const fileExpenseReport = async (
     const repliconPage = helpers.setPuppetPage(nextTab);
     repliconPage.waitFor(500);
     await repliconPage.waitForSelector('a[href="/Credera/my/expenses/"]');
-    await createNewExpenseReport(repliconPage, receipts, description, project);
+    await createNewExpenseReport(
+      repliconPage,
+      receipts,
+      description,
+      client,
+      project
+    );
     await page.waitFor(500);
     await browser.close();
   });
@@ -205,10 +241,18 @@ const main = async () => {
     password,
     receiptsPath,
     description,
+    client,
     project
   ] = process.argv;
   // Name receipts as: '2019-09-05_Travel_Lunch_Chipotle_$23.65.png'
   const receipts = await getReceipts(receiptsPath);
-  await fileExpenseReport(receipts, email, password, description, project);
+  await fileExpenseReport(
+    receipts,
+    email,
+    password,
+    description,
+    client,
+    project
+  );
 };
 main();
