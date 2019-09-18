@@ -159,7 +159,7 @@ const createRepliconExpenser = (context) => {
     return receipts;
   };
 
-  const setClientAndProject = async (client, project) => {
+  const setClientAndProject = async (page, client, project) => {
     await page.clickAndWaitSelector(
       "#searchDDLabel_expenseProject_n0",
       '[aria-label="Type to Search"]'
@@ -222,7 +222,7 @@ const createRepliconExpenser = (context) => {
 
     context.log(`Setting description to '${description}'`);
     await page.setValue("#expenseDescription", description);
-    await setClientAndProject(client, project)
+    await setClientAndProject(page, client, project)
     // context.log(`Clicking project input...`);
     // await page.clickAndWaitSelector(
     //   "#searchDDLabel_expenseProject_n0",
@@ -277,7 +277,7 @@ const createRepliconExpenser = (context) => {
     project
   ) => {
     context.log(`Creating puppet page...`);
-    const { page, browser } = await helpers.createPuppetPage();
+    const { page, browser } = await helpers.createPuppetPage(false);
     context.log(`Logging into Replicon...`);
     await loginToReplicon(page, email, password);
     context.log(`Waiting for Replicon tab to be created...`);
