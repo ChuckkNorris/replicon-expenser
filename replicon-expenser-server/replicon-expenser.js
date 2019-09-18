@@ -10,8 +10,7 @@ const slash = require("slash");
 const TEMP_DESCRIPTION = "Test Description CHANGE";
 const TEMP_PROJECT = "Training";
 
-const createRepliconExpenser = (context) => {
-
+const createRepliconExpenser = context => {
   const loginToReplicon = async (page, email, password) => {
     const myAppsUrl = "https://myapps.microsoft.com";
     context.log(`Navigating to '${myAppsUrl}'`);
@@ -61,7 +60,9 @@ const createRepliconExpenser = (context) => {
       page.waitForFileChooser(),
       frame.click("#uploadFile")
     ]);
-    context.log(`Uploading receipt image for row '${rowId}' from path: '${receiptPath}'`);
+    context.log(
+      `Uploading receipt image for row '${rowId}' from path: '${receiptPath}'`
+    );
     await fileChooser.accept([receiptPath]);
     context.log(`Uploading and waiting for close button...`);
     await frame.clickAndWaitSelector("#button_Upload", "#button_Close");
@@ -84,7 +85,7 @@ const createRepliconExpenser = (context) => {
       duplicateLink
     );
     await detailButton.click();
-    context.log(`Waiting for detail button`)
+    context.log(`Waiting for detail button`);
     await page.waitForSelector(`#advanced_infofield_2_${rowId}`);
   };
 
@@ -135,7 +136,7 @@ const createRepliconExpenser = (context) => {
     return fullPath;
   };
 
-  const getReceipts = async (directoryPath) => {
+  const getReceipts = async directoryPath => {
     const files = fs.readdirSync(directoryPath);
     let receipts = [];
     for (fileName of files) {
@@ -165,43 +166,43 @@ const createRepliconExpenser = (context) => {
       '[aria-label="Type to Search"]'
     );
     await page.waitFor(1000);
-  
     const clientProjects = await page.$$("a[value]");
     let clientFound = false;
     for (const cp of clientProjects) {
-      const cpText = await (await cp.getProperty("innerText")).jsonValue();
-      const parentDiv = await (await (await (await (await cp.getProperty(
-        "parentElement"
-      )).getProperty("parentElement")).getProperty("parentElement")).getProperty(
-        "className"
-      )).jsonValue();
+      let cpText = await page.evaluate(el => el.innerText, cp);
+      cpText = cpText.toLowerCase();
       if (
-        (!clientFound &&
-          cpText.indexOf(client) >= 0 &&
-          parentDiv === "listArea activeArea overthrow") ||
-        (clientFound &&
-          cpText.indexOf(project) >= 0 &&
-          parentDiv === "subListArea overthrow")
+        (!clientFound && cpText.indexOf(client.toLowerCase()) >= 0) ||
+        (clientFound && cpText.indexOf(project.toLowerCase()) >= 0)
       ) {
         if (!clientFound) clientFound = true;
-        const cpHTML = await (await cp.getProperty("outerHTML")).jsonValue();
+        const cpHTML = await page.evaluate(el => el.outerHTML, cp);
         const cpValue = cpHTML.substring(
           cpHTML.indexOf("value") + 7,
           cpHTML.indexOf(">") - 1
         );
         await page.clickAndWaitSelector(`[value='${cpValue}']`, "#date_n0");
+        await page.waitFor(1000);
       }
     }
-  }
+  };
 
-  const createNewExpenseReport = async (page, receipts, description, client, project) => {
+  const createNewExpenseReport = async (
+    page,
+    receipts,
+    description,
+    client,
+    project
+  ) => {
     context.log(`Creating new expense report...`);
     // Dismiss date incorrect dialog
-    page.on('dialog', async dialog => {
+    page.on("dialog", async dialog => {
       const message = dialog.message();
       context.log(`Dialog opened with message: ${message}`);
-      if (message.indexOf('date of the expense')) {
-        context.log("It's a date error dialog... ignore if date is inside project date");
+      if (message.indexOf("date of the expense")) {
+        context.log(
+          "It's a date error dialog... ignore if date is inside project date"
+        );
       } else {
         throw message;
       }
@@ -222,7 +223,7 @@ const createRepliconExpenser = (context) => {
 
     context.log(`Setting description to '${description}'`);
     await page.setValue("#expenseDescription", description);
-    await setClientAndProject(page, client, project)
+    await setClientAndProject(page, client, project);
     // context.log(`Clicking project input...`);
     // await page.clickAndWaitSelector(
     //   "#searchDDLabel_expenseProject_n0",
@@ -247,10 +248,20 @@ const createRepliconExpenser = (context) => {
     await page.click(`button[title="Save"]`);
   };
 
-  const onTabCreatedAsync = async (browser, page, receipts, description, client, project) => {
+  const onTabCreatedAsync = async (
+    browser,
+    page,
+    receipts,
+    description,
+    client,
+    project
+  ) => {
     return new Promise(async (resolve, reject) => {
       browser.on("targetcreated", async function() {
-        context.log("Tab Created - Tab Count: ", (await browser.pages()).length);
+        context.log(
+          "Tab Created - Tab Count: ",
+          (await browser.pages()).length
+        );
         const allTabs = await browser.pages();
         const nextTab = allTabs[allTabs.length - 1];
         const repliconPage = helpers.setPuppetPage(nextTab);
@@ -258,15 +269,21 @@ const createRepliconExpenser = (context) => {
         context.log(`Waiting for Replicon Expenses link...`);
         await repliconPage.waitForSelector('a[href="/Credera/my/expenses/"]');
         context.log(`Creating new expense report...`);
-        context.log({receipts, description, project});
-        await createNewExpenseReport(repliconPage, receipts, description, client, project);
+        context.log({ receipts, description, project });
+        await createNewExpenseReport(
+          repliconPage,
+          receipts,
+          description,
+          client,
+          project
+        );
         await page.waitFor(500);
         await browser.close();
         resolve();
       });
       await page.click("[title=Replicon]");
     });
-  }
+  };
 
   const fileExpenseReport = async (
     receipts,
@@ -281,10 +298,17 @@ const createRepliconExpenser = (context) => {
     context.log(`Logging into Replicon...`);
     await loginToReplicon(page, email, password);
     context.log(`Waiting for Replicon tab to be created...`);
-    await onTabCreatedAsync(browser, page, receipts, description, client, project);
+    await onTabCreatedAsync(
+      browser,
+      page,
+      receipts,
+      description,
+      client,
+      project
+    );
   };
 
-  const createRepliconExpenseReport = async (expenseDetails) => {
+  const createRepliconExpenseReport = async expenseDetails => {
     const {
       email,
       password,
@@ -293,16 +317,23 @@ const createRepliconExpenser = (context) => {
       client,
       project
     } = expenseDetails;
-    context.log('Getting Receipts from : ', receiptsPath);
+    context.log("Getting Receipts from : ", receiptsPath);
     const receipts = await getReceipts(receiptsPath);
-    context.log(`Filing expense report...`)
-    await fileExpenseReport(receipts, email, password, description, client, project);
-  }
+    context.log(`Filing expense report...`);
+    await fileExpenseReport(
+      receipts,
+      email,
+      password,
+      description,
+      client,
+      project
+    );
+  };
   return {
     createRepliconExpenseReport
   };
-}
+};
 
 module.exports = {
   createRepliconExpenser
-}
+};
