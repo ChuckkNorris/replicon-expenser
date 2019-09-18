@@ -73,7 +73,9 @@ app.post('/api/create-expense-report', async (req, res, next) => {
 
     res.send({
       status: 200,
-      body: { message: "Upload complete" },
+      body: { 
+        message: "Expense report created successfully",
+      },
       headers: {
         'Content-Type': 'application/json'
       }
@@ -82,10 +84,13 @@ app.post('/api/create-expense-report', async (req, res, next) => {
     console.log('Error Occurred...', err);
     res.send({
       status: 500,
-      body: { message: "Error Occurred", error: err },
+      body: { 
+        message: "Error occurred while creating expense report",
+        error: err 
+      },
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
     });
     throw err;
   }
