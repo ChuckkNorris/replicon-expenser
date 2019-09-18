@@ -24,5 +24,20 @@ stages:
         repository: 'replicon-expenser-api'
         command: 'buildAndPush'
         Dockerfile: 'replicon-expenser-server/Dockerfile'
-    # Build a Docker image 
-    # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+- stage: Deploy
+  displayName: Deploy docker container to Azure App Service
+  jobs:  
+  - job: Release
+    displayName: Release
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: AzureRmWebAppDeployment@4
+      inputs:
+        ConnectionType: 'AzureRM'
+        azureSubscription: 'Visual Studio Enterprise with MSDN (56f0fde1-b4cf-400d-bbbb-a494b6421a7a)'
+        appType: 'webAppContainer'
+        WebAppName: 'replicon-expenser-api'
+        DockerNamespace: 'appsregistry.azurecr.io'
+        DockerRepository: 'replicon-expenser-api'
+        DockerImageTag: 'latest'
