@@ -5,7 +5,7 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
-// import TablePagination from '@material-ui/core/TablePagination';
+import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import ReceiptModal from './ReceiptModal';
 
@@ -49,8 +49,8 @@ function createData(date, expenseType, purpose, place, amount, receipt) {
 }
 
 const rows = [
-  createData('2019-09-03', 'Travel', 'Training', 'Southwest Airlines', 89.75, "2019-09-03_Travel_Training_Southwest Airlines_89.75"),
-  createData('2019-09-03', 'Meal', 'Training', 'Chipotle', 11.54, "2019-09-03_Meal_Training_Chipotle_11.54"),
+  createData('2019-09-03', 'Travel', 'Training', 'Southwest Airlines', 89.75, "2019-09-03_Travel_Training_Southwest Airlines_89.75.png"),
+  createData('2019-09-03', 'Meal', 'Training', 'Chipotle', 11.54, "2019-09-03_Meal_Training_Chipotle_11.54.png"),
 ];
 
 const useStyles = makeStyles({
@@ -69,16 +69,16 @@ export default function RepliconTable() {
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [state, setState] = useState();
+  
 
-  // function handleChangePage(event, newPage) {
-  //   setPage(newPage);
-  // }
+  function handleChangePage(event, newPage) {
+    setPage(newPage);
+  }
 
-  // function handleChangeRowsPerPage(event) {
-  //   setRowsPerPage(+event.target.value);
-  //   setPage(0);
-  // }
+  function handleChangeRowsPerPage(event) {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  }
 
   return (
      <Paper className={classes.root}>
@@ -112,8 +112,8 @@ export default function RepliconTable() {
               );
             })}
           </TableBody>
-      {/* <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 50, 100]}
         component="div"
         count={rows.length}
         rowsPerPage={rowsPerPage}
@@ -126,11 +126,9 @@ export default function RepliconTable() {
         }}
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
-      />  */}
+      /> 
     </Table>
     <ReceiptModal />
     </Paper>
   );
 }
-
-

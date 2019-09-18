@@ -3,13 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { DropzoneArea } from 'material-ui-dropzone';
 
-function rand() {
-    return Math.round(Math.random() * 20) - 10;
-}
-
 function getModalStyle() {
-    const top = 50 + rand();
-    const left = 50 + rand();
+    const top = 50;
+    const left = 50;
 
     return {
         top: `${top}%`,
@@ -17,6 +13,15 @@ function getModalStyle() {
         transform: `translate(-${top}%, -${left}%)`,
     };
 }
+
+function isValidDate(dateString) {
+    var regEx = /^\d{4}-\d{2}-\d{2}$/;
+    if(!dateString.match(regEx)) return false;
+    var d = new Date(dateString);
+    var dNum = d.getTime();
+    if(!dNum && dNum !== 0) return false;
+    return d.toISOString().slice(0,10) === dateString;
+  }
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -43,6 +48,42 @@ export default function ReceiptModal() {
         setOpen(false);
     };
 
+    const handleSubmit = () => {
+        setOpen(false);
+    }
+
+    // validate = () => {
+    //     let isError = false;
+    //     const errors = {
+    //         dateIncurredError: "",
+    //         expenseTypeError: "",
+    //         purposeError: "",
+    //         placeError: "",
+    //         amountError: "",
+    //     };
+
+    //     if (isValidDate(this.state.dateIncurred))
+    //     { isError = true;
+    //         errors.dateIncurredError = "Please format the date YYYY-MM-DD"
+    //     }
+    //     if (this.state.expenseType = !NaN) {
+    //         isError = true;
+    //         errors.expenseTypeError = "Expense type cannot be a number"
+    //     }
+    //     if (purposeError = !NaN) {
+    //         isError = true;
+    //         errors.purposeError = "Purpose cannot be a number"
+    //     }
+    //     if (placeError = !NaN) {
+    //         isError = true;
+    //         errors.placeError = "Place cannot be a number"
+    //     }
+    //     if (amountError = NaN) {
+    //         isError = true;
+    //         errors.amountError = "Amount must be a number"
+    //     }
+    // }
+
     return (
         <div>
             <button type="button" onClick={handleOpen}>
@@ -59,18 +100,22 @@ export default function ReceiptModal() {
                     <p id="simple-modal-description"> Please select the files of your receipts. 
                     </p>
                     <DropzoneArea 
-                        allowMultiple={true}
+                        allowMultiple={false}
                         acceptedFiles={['image/jpeg', 'image/png']}
-                        showPreviews={true}
-                        showFileNamesInPreview={true}
-                        showFileNames={true}
-                        showPreviewsInDropzone={false}
-                        filesLimit={5}
-                        />
-                    <button type="button" onClick={handleClose}>Close</button>
-                    <input type="submit" value="Submit" onSubmit={handleClose} />
+                        showPreviews={false}
+                        showFileNamesInPreview={false}
+                        showFileNames={false}
+                        showPreviewsInDropzone={true}
+                        filesLimit={3}
+                    />
+                    <div style={{marginTop: "10%", textAlign: "right"}}>
+                        <button type="button" onClick={handleClose}>Close</button>
+                        <button value="Submit" onClick={handleSubmit}> Submit</button>
+                    </div>
+                    
                     
                 </div>
+                       
             </Modal>
         </div>
     );
