@@ -24,6 +24,7 @@ stages:
         repository: 'replicon-expenser-api'
         command: 'buildAndPush'
         Dockerfile: 'replicon-expenser-server/Dockerfile'
+        tags: '$(tag)'
 - stage: Deploy
   displayName: Deploy docker container to Azure App Service
   jobs:  
@@ -38,6 +39,5 @@ stages:
         azureSubscription: 'Visual Studio Enterprise with MSDN (56f0fde1-b4cf-400d-bbbb-a494b6421a7a)'
         appType: 'webAppContainer'
         WebAppName: 'replicon-expenser-api'
-        DockerNamespace: 'appsregistry.azurecr.io'
         DockerRepository: 'replicon-expenser-api'
-        DockerImageTag: 'latest'
+        DockerImageTag: '$(tag)'
