@@ -35,9 +35,15 @@ stages:
     steps:
     - task: AzureRmWebAppDeployment@4
       inputs:
-        ConnectionType: 'AzureRM'
-        azureSubscription: 'Visual Studio Enterprise with MSDN (56f0fde1-b4cf-400d-bbbb-a494b6421a7a)'
-        appType: 'webAppContainer'
-        WebAppName: 'replicon-expenser-api'
-        DockerRepository: 'replicon-expenser-api'
-        DockerImageTag: '$(tag)'
+          ConnectionType: 'AzureRM'
+          azureSubscription: 'Visual Studio Enterprise with MSDN(56f0fde1-b4cf-400d-bbbb-a494b6421a7a)'
+          appType: 'webAppContainer'
+          WebAppName: 'replicon-expenser-api'
+          deployToSlotOrASE: true
+          ResourceGroupName: 'AppsResourceGroup'
+          SlotName: 'production'
+          DockerNamespace: 'appsregistry.azurecr.io'
+          DockerRepository: 'replicon-expenser-api'
+          DockerImageTag: '$(tag)'
+
+    
