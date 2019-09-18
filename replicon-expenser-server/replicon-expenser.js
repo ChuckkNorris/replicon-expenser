@@ -159,7 +159,42 @@ const createRepliconExpenser = (context) => {
     return receipts;
   };
 
-  const createNewExpenseReport = async (page, receipts, description, project) => {
+  const setClientAndProject = async (client, project) => {
+    await page.clickAndWaitSelector(
+      "#searchDDLabel_expenseProject_n0",
+      '[aria-label="Type to Search"]'
+    );
+    await page.waitFor(1000);
+  
+    const clientProjects = await page.$$("a[value]");
+    let clientFound = false;
+    for (const cp of clientProjects) {
+      const cpText = await (await cp.getProperty("innerText")).jsonValue();
+      const parentDiv = await (await (await (await (await cp.getProperty(
+        "parentElement"
+      )).getProperty("parentElement")).getProperty("parentElement")).getProperty(
+        "className"
+      )).jsonValue();
+      if (
+        (!clientFound &&
+          cpText.indexOf(client) >= 0 &&
+          parentDiv === "listArea activeArea overthrow") ||
+        (clientFound &&
+          cpText.indexOf(project) >= 0 &&
+          parentDiv === "subListArea overthrow")
+      ) {
+        if (!clientFound) clientFound = true;
+        const cpHTML = await (await cp.getProperty("outerHTML")).jsonValue();
+        const cpValue = cpHTML.substring(
+          cpHTML.indexOf("value") + 7,
+          cpHTML.indexOf(">") - 1
+        );
+        await page.clickAndWaitSelector(`[value='${cpValue}']`, "#date_n0");
+      }
+    }
+  }
+
+  const createNewExpenseReport = async (page, receipts, description, client, project) => {
     context.log(`Creating new expense report...`);
     // Dismiss date incorrect dialog
     page.on('dialog', async dialog => {
@@ -181,19 +216,23 @@ const createRepliconExpenser = (context) => {
     );
     // Create New Expense Report
     context.log(`Adding new expense report...`);
+    // Navigating to New Expense page and waiting for first row
     await page.clickAndWaitSelector("#addNewExpenseButton", "#date_n0");
+    // Settings description, client, and project
+
     context.log(`Setting description to '${description}'`);
     await page.setValue("#expenseDescription", description);
-    context.log(`Clicking project input...`);
-    await page.clickAndWaitSelector(
-      "#searchDDLabel_expenseProject_n0",
-      '[aria-label="Type to Search"]'
-    );
-    context.log(`Setting project to: '${project}'`);
-    await page.setValue('[aria-label="Type to Search"]', project);
-    await page.waitFor(1000);
-    await page.keyboard.type("\n");
-    await page.keyboard.type("\n");
+    await setClientAndProject(client, project)
+    // context.log(`Clicking project input...`);
+    // await page.clickAndWaitSelector(
+    //   "#searchDDLabel_expenseProject_n0",
+    //   '[aria-label="Type to Search"]'
+    // );
+    // context.log(`Setting project to: '${project}'`);
+    // await page.setValue('[aria-label="Type to Search"]', project);
+    // await page.waitFor(1000);
+    // await page.keyboard.type("\n");
+    // await page.keyboard.type("\n");
     for (const [index, receipt] of receipts.entries()) {
       const rowId = `n${index}`;
       const dateRowSel = `#date_${rowId}`;
@@ -208,7 +247,7 @@ const createRepliconExpenser = (context) => {
     await page.click(`button[title="Save"]`);
   };
 
-  const onTabCreatedAsync = async (browser, page, receipts, description, project) => {
+  const onTabCreatedAsync = async (browser, page, receipts, description, client, project) => {
     return new Promise(async (resolve, reject) => {
       browser.on("targetcreated", async function() {
         context.log("Tab Created - Tab Count: ", (await browser.pages()).length);
@@ -220,7 +259,7 @@ const createRepliconExpenser = (context) => {
         await repliconPage.waitForSelector('a[href="/Credera/my/expenses/"]');
         context.log(`Creating new expense report...`);
         context.log({receipts, description, project});
-        await createNewExpenseReport(repliconPage, receipts, description, project);
+        await createNewExpenseReport(repliconPage, receipts, description, client, project);
         await page.waitFor(500);
         await browser.close();
         resolve();
@@ -234,6 +273,7 @@ const createRepliconExpenser = (context) => {
     email,
     password,
     description,
+    client,
     project
   ) => {
     context.log(`Creating puppet page...`);
@@ -241,7 +281,7 @@ const createRepliconExpenser = (context) => {
     context.log(`Logging into Replicon...`);
     await loginToReplicon(page, email, password);
     context.log(`Waiting for Replicon tab to be created...`);
-    await onTabCreatedAsync(browser, page, receipts, description, project);
+    await onTabCreatedAsync(browser, page, receipts, description, client, project);
   };
 
   const createRepliconExpenseReport = async (expenseDetails) => {
@@ -250,12 +290,13 @@ const createRepliconExpenser = (context) => {
       password,
       receiptsPath,
       description,
+      client,
       project
     } = expenseDetails;
     context.log('Getting Receipts from : ', receiptsPath);
     const receipts = await getReceipts(receiptsPath);
     context.log(`Filing expense report...`)
-    await fileExpenseReport(receipts, email, password, description, project);
+    await fileExpenseReport(receipts, email, password, description, client, project);
   }
   return {
     createRepliconExpenseReport
