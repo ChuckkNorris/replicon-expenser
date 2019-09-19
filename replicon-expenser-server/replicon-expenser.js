@@ -7,9 +7,6 @@ const process = require("process");
 const moment = require("moment");
 const slash = require("slash");
 
-const TEMP_DESCRIPTION = "Test Description CHANGE";
-const TEMP_PROJECT = "Training";
-
 const createRepliconExpenser = context => {
   const loginToReplicon = async (page, email, password) => {
     const myAppsUrl = "https://myapps.microsoft.com";
@@ -182,7 +179,7 @@ const createRepliconExpenser = context => {
           cpHTML.indexOf(">") - 1
         );
         await page.clickAndWaitSelector(`[value='${cpValue}']`, "#date_n0");
-        await page.waitFor(1000);
+        await page.waitFor(500);
       }
     }
   };
