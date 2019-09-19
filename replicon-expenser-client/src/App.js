@@ -1,18 +1,16 @@
-import React from 'react';
-import './App.css';
-import RepliconTable from './RepliconTable';
+import React from "react";
+import "./App.css";
+import RepliconTable from "./RepliconTable";
+import RepliconForm from "./RepliconForm";
 
-
-
-const createExpenseReport = () => {
-
-}
+const createExpenseReport = () => {};
 
 function App() {
   return (
     <div className="App">
-      <form onSubmit={createExpenseReport}></form>
-      <RepliconTable/>
+      <form onSubmit={createExpenseReport}> </form>
+      <RepliconForm />
+      <RepliconTable />
     </div>
   );
 }
