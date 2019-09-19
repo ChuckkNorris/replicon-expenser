@@ -61,7 +61,7 @@ const getFormPartsRedux = async (req) => {
 app.post('/api/create-expense-report', async (req, res, next) => {
   console.log('You posted to create an expense!');
   try {
-    console.log('JavaScript HTTP trigger function processed a request.');
+    console.log('Processing a request to create an expense report...');
     const { fields, files, outputDir } = await getFormPartsRedux(req);
 
     console.log('Output Directory: ', outputDir);
@@ -71,21 +71,14 @@ app.post('/api/create-expense-report', async (req, res, next) => {
       receiptsPath: outputDir,
     });
 
-    res.send({
-      status: 200,
-      body: { message: "Upload complete" },
-      headers: {
-        'Content-Type': 'application/json'
-      }
+    res.status(200).send({
+      message: "Expense report created successfully",
     })
   } catch (err) {
     console.log('Error Occurred...', err);
-    res.send({
-      status: 500,
-      body: { message: "Error Occurred", error: err },
-      headers: {
-        'Content-Type': 'application/json'
-      }
+    res.status(500).send({
+      message: "Error occurred while creating expense report",
+      error: err,
     });
     throw err;
   }
