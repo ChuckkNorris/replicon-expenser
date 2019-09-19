@@ -291,7 +291,7 @@ const createRepliconExpenser = context => {
     project
   ) => {
     context.log(`Creating puppet page...`);
-    const { page, browser } = await helpers.createPuppetPage(false);
+    const { page, browser } = await helpers.createPuppetPage();
     context.log(`Logging into Replicon...`);
     await loginToReplicon(page, email, password);
     context.log(`Waiting for Replicon tab to be created...`);
