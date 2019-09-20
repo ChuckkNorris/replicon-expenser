@@ -4,12 +4,7 @@ Take pictures of your receipts, name them in a specific format, then execute thi
 
 # Steps to Run
 
-1. Install NodeJS
-2. Install Dependencies
-
-   `npm install`
-
-3. Name your expenses and put them in a folder:
+1. Name your expense receipt images and put them in a folder:
 
    ```
    2019-09-06_Meal_Dinner_Elways_$13.22.png
@@ -17,8 +12,18 @@ Take pictures of your receipts, name them in a specific format, then execute thi
    MealTypes = ['Travel', 'Meal', 'Training']
    ```
 
-4. Create the expense report
+2. Download [Postman](https://www.getpostman.com/downloads) or another API program
+3. Create the expense report API call in Postman with the information in the following image: ![](./images/create-expense-report-postman.png)  
+   **The `password` field in the API call is base64 encoded**
 
-   `npm start "myemail@credera.com" "MyPassword" "./path/to/receipts/folder" "Expense Description" "Client Name" "Project Name"`
+4. Navigate to ./replicon-expenser-server
+5. Install NodeJS
+6. Install Dependencies
 
-   Script requires Credera account username/password, path to receipts folder, description for expense report, client name, and project name. Can input substring of client name and project name. If there are multiple clients/projects that match the input substring, the first will be selected
+   `npm install`
+
+7. Start the server
+
+   `node server.js`
+
+8. Click `Send` in Postman to create expense report
