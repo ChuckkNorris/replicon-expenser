@@ -13,10 +13,18 @@ Take pictures of your receipts, name them in a specific format, then execute thi
    ```
 
 2. Download [Postman](https://www.getpostman.com/downloads) or another API program
-3. Create the expense report API call in Postman with the information in the following image: ![](./images/create-expense-report-postman.png)  
+3. Create the expense report API call in Postman with the following information: ![](./images/create-expense-report-postman.png)  
    **The `password` field in the API call is base64 encoded**
 
-4. Navigate to ./replicon-expenser-server
+4. Set the url of the API call to `https://replicon-expenser-api.azurewebsites.net/api/create-expense-report`
+5. Click `Send` in Postman to create expense report
+
+# Steps to Run Locally for Development/Debugging purposes
+
+1. Follow Steps 1-3 from [Steps to Run](#steps-to-run)
+2. Set the url of the API call to `localhost:3005/api/create-expense-report`
+3. Navigate to ./replicon-expenser-server
+4. (optional) Disable headless mode in page.helpers.js to watch the script navigate through the Replicon experience ![](./images/headless-mode.png)
 5. Install NodeJS
 6. Install Dependencies
 
