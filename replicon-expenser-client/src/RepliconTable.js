@@ -8,8 +8,39 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import ReceiptModal from './ReceiptModal';
+import { TextField } from 'material-ui';
 
 
+// const row = (
+//   x,
+//   i, 
+//   header,
+//   handleRemove,
+//   startEditing,
+//   editIdx,
+//   handleChange,
+//   stopEditing
+// ) => {
+//   const currentlyEditing = editIdx === i;
+//   return (
+//     <TableRow key={'tr-${i}'} selectable={false}>
+//       {header.map((y,k) => (
+//         <TableRowColumn key={'trc-${k}'}>
+//           {currentlyEditing ? (
+//             <TextField
+//             name={y.prop}
+//             onChange={e => handleChange(e, y.prop, i)}
+//             value={x[y.prop]}
+//             />
+//           ) : (
+//             x[y.prop]
+//           )}
+//           </TableRowColumn>
+//           ))}
+//         </TableRowColumn>
+//     </TableRow>
+//   )
+// }
 
 
 const columns = [
@@ -87,6 +118,7 @@ export default function RepliconTable() {
             <TableRow>
               {columns.map(column => (
                 <TableCell
+                  
                   key={column.id}
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
@@ -125,7 +157,7 @@ export default function RepliconTable() {
           'aria-label': 'next page',
         }}
         onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onChangeRowsPerPage={handleChangeRowsPerPage} 
       /> 
     </Table>
     <ReceiptModal />

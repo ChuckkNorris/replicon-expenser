@@ -52,7 +52,8 @@ export default function ReceiptModal() {
         setOpen(false);
     }
 
-    // validate = () => {
+
+    // function validate() {
     //     let isError = false;
     //     const errors = {
     //         dateIncurredError: "",
@@ -100,13 +101,13 @@ export default function ReceiptModal() {
                     <p id="simple-modal-description"> Please select the files of your receipts. 
                     </p>
                     <DropzoneArea 
-                        allowMultiple={false}
+                        allowMultiple={true}
                         acceptedFiles={['image/jpeg', 'image/png']}
                         showPreviews={false}
                         showFileNamesInPreview={false}
-                        showFileNames={false}
+                        showFileNames={true}
                         showPreviewsInDropzone={true}
-                        filesLimit={3}
+                        filesLimit={5}
                     />
                     <div style={{marginTop: "10%", textAlign: "right"}}>
                         <button type="button" onClick={handleClose}>Close</button>
@@ -115,6 +116,7 @@ export default function ReceiptModal() {
                     
                     
                 </div>
+
                        
             </Modal>
         </div>
