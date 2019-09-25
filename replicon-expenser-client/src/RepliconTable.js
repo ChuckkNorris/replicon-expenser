@@ -74,10 +74,14 @@ export default function RepliconTable() {
 
   const callBackFromTable = (files) => {
     const names = files.map((files) =>
-      files.name
+      files.name.split("_")
     )
     setFileNames(names)
+    //var data = names.split("_")
   }
+
+    //const data = fileNames.split("_");
+    //console.log(data)
 
   console.log("File Names: ", fileNames)
   const classes = useStyles();
