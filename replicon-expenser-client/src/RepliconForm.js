@@ -39,7 +39,7 @@ export default class RepliconForm extends Component {
       <div className="RepliconForm">
         <Form onSubmit={this.handleSubmit}>
           <Form.Group controlId="email" bsSize="large">
-            <label>Email</label>
+            <label>Email </label>
             <Form.Control
               autoFocus
               type="email"
@@ -79,6 +79,7 @@ export default class RepliconForm extends Component {
               type="project"
             />
           </Form.Group>
+          <button type="button">Submit</button>
         </Form>
       </div>
     );

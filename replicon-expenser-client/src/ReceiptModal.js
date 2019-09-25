@@ -1,62 +1,61 @@
-import React, { useState, useCallback, Component } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
-import { DropzoneArea } from 'material-ui-dropzone';
-import { DropzoneDialog } from 'material-ui-dropzone';
-import { useDropzone } from 'react-dropzone';
-
+import React, { useState, useCallback, Component } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Modal from "@material-ui/core/Modal";
+import { DropzoneArea } from "material-ui-dropzone";
+import { DropzoneDialog } from "material-ui-dropzone";
+import { useDropzone } from "react-dropzone";
 
 function getModalStyle() {
-    const top = 50;
-    const left = 50;
+  const top = 50;
+  const left = 50;
 
-    return {
-        top: `${top}%`,
-        left: `${left}%`,
-        transform: `translate(-${top}%, -${left}%)`,
-    };
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`
+  };
 }
 
 function isValidDate(dateString) {
-    var regEx = /^\d{4}-\d{2}-\d{2}$/;
-    if (!dateString.match(regEx)) return false;
-    var d = new Date(dateString);
-    var dNum = d.getTime();
-    if (!dNum && dNum !== 0) return false;
-    return d.toISOString().slice(0, 10) === dateString;
+  var regEx = /^\d{4}-\d{2}-\d{2}$/;
+  if (!dateString.match(regEx)) return false;
+  var d = new Date(dateString);
+  var dNum = d.getTime();
+  if (!dNum && dNum !== 0) return false;
+  return d.toISOString().slice(0, 10) === dateString;
 }
 
 const useStyles = makeStyles(theme => ({
-    paper: {
-        position: 'absolute',
-        width: 400,
-        backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
-    },
+  paper: {
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3)
+  }
 }));
 
-//const createRow = 
+//const createRow =
 
 // export default function ReceiptModal() {
-    //  const classes = useStyles();
-    //  const [modalStyle] = useState(getModalStyle);
-    //  const [open, setOpen] = useState();
-    //  const acceptedFiles = useDropzone();
+//  const classes = useStyles();
+//  const [modalStyle] = useState(getModalStyle);
+//  const [open, setOpen] = useState();
+//  const acceptedFiles = useDropzone();
 
-    // const handleOpen = () => {
-    //     setOpen(true);
-    // };
+// const handleOpen = () => {
+//     setOpen(true);
+// };
 
-    // const handleClose = () => {
-    //     setOpen(false);
-    // };
+// const handleClose = () => {
+//     setOpen(false);
+// };
 
-    // const handleSubmit = () => {
-    //     setOpen(false);
-    //     { console.log(acceptedFiles) }
-    // }
+// const handleSubmit = () => {
+//     setOpen(false);
+//     { console.log(acceptedFiles) }
+// }
 
 //     const handleFileChange = (files) => {
 //         console.log("Files: ", files)
@@ -131,36 +130,35 @@ const useStyles = makeStyles(theme => ({
 //     );
 // }
 export default function UploadReceipts(props) {
+  const [open, setOpen] = useState();
 
-    const [open, setOpen] = useState();
-    
-    const handleClose = () => {
-        setOpen(false)
-    }
-    
-    const handleSave = (files) => {
-        setOpen(false)
-        props.callBackFromTable(files)
-    }
- 
-    const handleOpen = () => {
-        setOpen(true)
-    }
- 
-        return (
-            <div>
-             <button type="button" onClick={handleOpen}>
-                Upload Receipts
-            </button>
-                <DropzoneDialog
-                    open={open}
-                    onSave={handleSave}
-                    acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
-                    showPreviews={true}
-                    maxFileSize={5000000}
-                    onClose={handleClose}
-                    filesLimit={100}
-                />
-             </div>
-        );
-    }
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleSave = files => {
+    setOpen(false);
+    props.callBackFromTable(files);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  return (
+    <div>
+      <button type="button" onClick={handleOpen}>
+        Upload Receipts
+      </button>
+      <DropzoneDialog
+        open={open}
+        onSave={handleSave}
+        acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
+        showPreviews={true}
+        maxFileSize={5000000}
+        onClose={handleClose}
+        filesLimit={100}
+      />
+    </div>
+  );
+}
