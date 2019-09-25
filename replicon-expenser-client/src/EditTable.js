@@ -21,10 +21,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
 const information = (x, i, header) => (
   <TableRow key={`tr-${i}`}>
     {header.map((y, k) => (

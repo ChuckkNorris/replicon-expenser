@@ -70,6 +70,18 @@ const useStyles = makeStyles({
 });
 
 export default function RepliconTable() {
+  const [fileNames, setFileNames] = useState([]);
+
+  const callBackFromTable = files => {
+    const names = files.map(files => files.name.split("_"));
+    setFileNames(names);
+    //var data = names.split("_")
+  };
+
+  //const data = fileNames.split("_");
+  //console.log(data)
+
+  console.log("File Names: ", fileNames);
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -156,7 +168,7 @@ export default function RepliconTable() {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Table>
-      <ReceiptModal />
+      <ReceiptModal callBackFromTable={callBackFromTable} />
     </Paper>
   );
 }

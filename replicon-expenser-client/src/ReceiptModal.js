@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, Component } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import { DropzoneArea } from "material-ui-dropzone";
+import { DropzoneDialog } from "material-ui-dropzone";
+import { useDropzone } from "react-dropzone";
 
 function getModalStyle() {
   const top = 50;
@@ -34,92 +36,129 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function ReceiptModal() {
-  const classes = useStyles();
-  const [modalStyle] = useState(getModalStyle);
-  const [open, setOpen] = useState(false);
+//const createRow =
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+// export default function ReceiptModal() {
+//  const classes = useStyles();
+//  const [modalStyle] = useState(getModalStyle);
+//  const [open, setOpen] = useState();
+//  const acceptedFiles = useDropzone();
+
+// const handleOpen = () => {
+//     setOpen(true);
+// };
+
+// const handleClose = () => {
+//     setOpen(false);
+// };
+
+// const handleSubmit = () => {
+//     setOpen(false);
+//     { console.log(acceptedFiles) }
+// }
+
+//     const handleFileChange = (files) => {
+//         console.log("Files: ", files)
+//     }
+
+//     // validate = () => {
+//     //     let isError = false;
+//     //     const errors = {
+//     //         dateIncurredError: "",
+//     //         expenseTypeError: "",
+//     //         purposeError: "",
+//     //         placeError: "",
+//     //         amountError: "",
+//     //     };
+
+//     //     if (isValidDate(this.state.dateIncurred))
+//     //     { isError = true;
+//     //         errors.dateIncurredError = "Please format the date YYYY-MM-DD"
+//     //     }
+//     //     if (this.state.expenseType = !NaN) {
+//     //         isError = true;
+//     //         errors.expenseTypeError = "Expense type cannot be a number"
+//     //     }
+//     //     if (purposeError = !NaN) {
+//     //         isError = true;
+//     //         errors.purposeError = "Purpose cannot be a number"
+//     //     }
+//     //     if (placeError = !NaN) {
+//     //         isError = true;
+//     //         errors.placeError = "Place cannot be a number"
+//     //     }
+//     //     if (amountError = NaN) {
+//     //         isError = true;
+//     //         errors.amountError = "Amount must be a number"
+//     //     }
+//     // }
+
+//     return (
+//         <div>
+//             <button type="button" onClick={handleOpen}>
+//                 Upload Receipts
+//             </button>
+//             <Modal
+//                 aria-labelledby="simple-modal-title"
+//                 aria-describedby="simple-modal-description"
+//                 open={open}
+//                 onClose={handleClose}
+//             >
+//                 <div style={modalStyle} className={classes.paper}>
+//                     <h2 id="simple-modal-title">Upload Receipts</h2>
+//                     <p id="simple-modal-description"> Please select the files of your receipts.
+//                         </p>
+//                     <DropzoneArea
+//                         onChange={(files) => handleFileChange(files)}
+//                         allowMultiple={true}
+//                         acceptedFiles={['image/jpeg', 'image/png']}
+//                         showPreviews={false}
+//                         showFileNamesInPreview={false}
+//                         showFileNames={false}
+//                         showPreviewsInDropzone={true}
+//                         filesLimit={50}
+//                     />
+//                     <div style={{ marginTop: "10%", textAlign: "right" }}>
+//                         <button type="button" onClick={handleClose}>Close</button>
+//                         <button value="Submit" onClick={handleSubmit}> Submit</button>
+//                     </div>
+//                 </div>
+//                 {/* </div> */}
+
+//             </Modal>
+//         </div>
+//     );
+// }
+export default function UploadReceipts(props) {
+  const [open, setOpen] = useState();
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleSubmit = () => {
+  const handleSave = files => {
     setOpen(false);
+    props.callBackFromTable(files);
   };
 
-  // validate = () => {
-  //     let isError = false;
-  //     const errors = {
-  //         dateIncurredError: "",
-  //         expenseTypeError: "",
-  //         purposeError: "",
-  //         placeError: "",
-  //         amountError: "",
-  //     };
-
-  //     if (isValidDate(this.state.dateIncurred))
-  //     { isError = true;
-  //         errors.dateIncurredError = "Please format the date YYYY-MM-DD"
-  //     }
-  //     if (this.state.expenseType = !NaN) {
-  //         isError = true;
-  //         errors.expenseTypeError = "Expense type cannot be a number"
-  //     }
-  //     if (purposeError = !NaN) {
-  //         isError = true;
-  //         errors.purposeError = "Purpose cannot be a number"
-  //     }
-  //     if (placeError = !NaN) {
-  //         isError = true;
-  //         errors.placeError = "Place cannot be a number"
-  //     }
-  //     if (amountError = NaN) {
-  //         isError = true;
-  //         errors.amountError = "Amount must be a number"
-  //     }
-  // }
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
   return (
     <div>
       <button type="button" onClick={handleOpen}>
         Upload Receipts
       </button>
-      <Modal
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
+      <DropzoneDialog
         open={open}
+        onSave={handleSave}
+        acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
+        showPreviews={true}
+        maxFileSize={5000000}
         onClose={handleClose}
-      >
-        <div style={modalStyle} className={classes.paper}>
-          <h2 id="simple-modal-title">Upload Receipts</h2>
-          <p id="simple-modal-description">
-            {" "}
-            Please select the files of your receipts.
-          </p>
-          <DropzoneArea
-            allowMultiple={false}
-            acceptedFiles={["image/jpeg", "image/png"]}
-            showPreviews={false}
-            showFileNamesInPreview={false}
-            showFileNames={false}
-            showPreviewsInDropzone={true}
-            filesLimit={3}
-          />
-          <div style={{ marginTop: "10%", textAlign: "right" }}>
-            <button type="button" onClick={handleClose}>
-              Close
-            </button>
-            <button value="Submit" onClick={handleSubmit}>
-              {" "}
-              Submit
-            </button>
-          </div>
-        </div>
-      </Modal>
+        filesLimit={100}
+      />
     </div>
   );
 }
