@@ -3,9 +3,12 @@ import "./App.css";
 import RepliconTable from "./RepliconTable";
 import RepliconForm from "./RepliconForm";
 
-const createExpenseReport = () => {};
 
-function App() {
+
+const App = () => {
+
+  const createExpenseReport = () => {};
+
   return (
     <div className="App">
       <form onSubmit={createExpenseReport}> </form>
