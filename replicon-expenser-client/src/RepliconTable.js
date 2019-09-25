@@ -13,24 +13,26 @@ import ReceiptModal from './ReceiptModal';
 
 
 const columns = [
-  { id: 'date', 
-    label: 'Date Incurred', 
-    minWidth: 100, 
-    },
-  { id: 'expenseType', 
-    label: 'Expense Type', 
-    minWidth: 100 
-    },
+  {
+    id: 'date',
+    label: 'Date Incurred',
+    minWidth: 100,
+  },
+  {
+    id: 'expenseType',
+    label: 'Expense Type',
+    minWidth: 100
+  },
   {
     id: 'purpose',
     label: 'Purpose',
     minWidth: 100,
-    },
+  },
   {
     id: 'place',
     label: 'Place',
     minWidth: 100,
-    },
+  },
   {
     id: 'amount',
     label: 'Amount',
@@ -45,7 +47,7 @@ const columns = [
 ];
 
 function createData(date, expenseType, purpose, place, amount, receipt) {
-  return { date, expenseType, purpose, place, amount, receipt};
+  return { date, expenseType, purpose, place, amount, receipt };
 }
 
 const rows = [
@@ -66,10 +68,22 @@ const useStyles = makeStyles({
 
 
 export default function RepliconTable() {
+
+  const [fileNames, setFileNames] = useState([])
+
+
+  const callBackFromTable = (files) => {
+    const names = files.map((files) =>
+      files.name
+    )
+    setFileNames(names)
+  }
+
+  console.log("File Names: ", fileNames)
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  
+
 
   function handleChangePage(event, newPage) {
     setPage(newPage);
@@ -81,54 +95,54 @@ export default function RepliconTable() {
   }
 
   return (
-     <Paper className={classes.root}>
-       <Table classname={classes.table}>
-          <TableHead>
-            <TableRow>
-              {columns.map(column => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
-              return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                  {columns.map(column => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === 'number' ? column.format(value) : value}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              );
-            })}
-          </TableBody>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 50, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        backIconButtonProps={{
-          'aria-label': 'previous page',
-        }}
-        nextIconButtonProps={{
-          'aria-label': 'next page',
-        }}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      /> 
-    </Table>
-    <ReceiptModal />
+    <Paper className={classes.root}>
+      <Table classname={classes.table}>
+        <TableHead>
+          <TableRow>
+            {columns.map(column => (
+              <TableCell
+                key={column.id}
+                align={column.align}
+                style={{ minWidth: column.minWidth }}
+              >
+                {column.label}
+              </TableCell>
+            ))}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
+            return (
+              <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                {columns.map(column => {
+                  const value = row[column.id];
+                  return (
+                    <TableCell key={column.id} align={column.align}>
+                      {column.format && typeof value === 'number' ? column.format(value) : value}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            );
+          })}
+        </TableBody>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 50, 100]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          backIconButtonProps={{
+            'aria-label': 'previous page',
+          }}
+          nextIconButtonProps={{
+            'aria-label': 'next page',
+          }}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+      </Table>
+      <ReceiptModal callBackFromTable={callBackFromTable} />
     </Paper>
   );
 }
