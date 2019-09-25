@@ -4,12 +4,12 @@ import RepliconTable from "./RepliconTable";
 import RepliconForm from "./RepliconForm";
 import EditTable from "./EditTable";
 
-// const createExpenseReport = () => {};    MUIZZ
+// const createExpenseReport = () => {};    MUIZZ
 
-// const createExpenseReport = () =>
-//   this.setState({
-//     data: [...this.state.data, createExpenseReport]
-//   });
+// const createExpenseReport = () =>
+//   this.setState({
+//     data: [...this.state.data, createExpenseReport]
+//   });
 
 class App extends Component {
   state = {
@@ -17,10 +17,10 @@ class App extends Component {
   };
 
   render() {
-    // function App() {   MUIZZ
+    // function App() {   MUIZZ
     return (
       <div className="App">
-        {/* <form onSubmit={createExpenseReport}> </form> */}
+                {/* <form onSubmit={createExpenseReport}> </form> */}
         <form
           onSubmit={createExpenseReport =>
             this.setState({
@@ -29,16 +29,18 @@ class App extends Component {
           }
         ></form>
         <RepliconForm />
+                 
         {/* <RepliconTable /> */}
+         
         <EditTable
           data={this.state.data}
           header={[
             {
-              name: "Date Incurred",
+              name: "Date Incurred",
               prop: "date"
             },
             {
-              name: "Expense Type",
+              name: "Expense Type",
               prop: "expenseType"
             },
             {
@@ -54,7 +56,7 @@ class App extends Component {
               prop: "amount"
             },
             {
-              name: "Receipt Files",
+              name: "Receipt Files",
               prop: "receipt"
             }
           ]}

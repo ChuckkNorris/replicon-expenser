@@ -1,4 +1,5 @@
-import React from "react";
+// import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -33,6 +34,19 @@ export default ({ data, header }) => {
   // export default function EditTable() {
   //   const classes = useStyles();
 
+  const [fileNames, setFileNames] = useState([]);
+
+  const callBackFromTable = files => {
+    const names = files.map(files => files.name.split("_"));
+    setFileNames(names);
+    //var data = names.split("_")
+  };
+
+  //const data = fileNames.split("_");
+  //console.log(data)
+
+  console.log("File Names: ", fileNames);
+
   return (
     // <Paper className={classes.root}>
     //   <Table className={classes.table}>
@@ -66,7 +80,7 @@ export default ({ data, header }) => {
           ))} */}
         </TableBody>
       </Table>
-      <ReceiptModal />
+      <ReceiptModal callBackFromTable={callBackFromTable} />
     </Paper>
   );
 };
