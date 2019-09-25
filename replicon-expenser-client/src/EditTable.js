@@ -35,12 +35,20 @@ export default ({ data, header }) => {
   //   const classes = useStyles();
 
   const [fileNames, setFileNames] = useState([]);
+  const [receiptRow, setReceiptRow] = useState([]);
+  const [fileLink, setFileLink] = useState([]);
 
   const callBackFromTable = files => {
+    const fullName = files.map(files => files.name);
     const names = files.map(files => files.name.split("_"));
     setFileNames(names);
+    setFileLink(fullName);
     //var data = names.split("_")
   };
+
+  const createRow = (event) => {
+    setReceiptRow(event.target.value);
+  }
 
   //const data = fileNames.split("_");
   //console.log(data)
@@ -64,8 +72,33 @@ export default ({ data, header }) => {
             <TableCell align="right">Protein&nbsp;(g)</TableCell> */}
           </TableRow>
         </TableHead>
-        <TableBody>
-          {data.map((x, i) => information(x, i, header))}
+
+        <TableBody
+          inputProps={{
+            dateIncurred: 'receiptRow.dateIncurred',
+            expenseType: 'receiptRow.expenseType',
+            purpose: 'receiptRow.purpose',
+            place: 'receiptRow.place',
+            amount: 'receiptRow.amount',
+            files: 'receiptRow.files',
+          }}
+        >
+          {/* {data.map((x, i) => information(x, i, header))} */}
+          {fileNames.map((fileNames) => (
+              <TableRow>
+                <TableCell align="right">{fileNames[0]}</TableCell>
+                <TableCell align="right">{fileNames[1]}</TableCell>
+                <TableCell align="right">{fileNames[2]}</TableCell>
+                <TableCell align="right">{fileNames[3]}</TableCell>
+                <TableCell align="right">{'$' + parseFloat(fileNames[4]).toFixed(2)}</TableCell>
+                <TableCell align="right">{fileLink}</TableCell>
+              </TableRow>
+
+            ))}
+          
+          {/* value={receiptRow}
+            // onClick={selectRequest} */}
+            
 
           {/* {rows.map(row => (
             <TableRow key={row.name}>
