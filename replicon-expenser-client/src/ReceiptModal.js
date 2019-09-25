@@ -159,6 +159,7 @@ export default function UploadReceipts(props) {
                     showPreviews={true}
                     maxFileSize={5000000}
                     onClose={handleClose}
+                    filesLimit={100}
                 />
              </div>
         );
