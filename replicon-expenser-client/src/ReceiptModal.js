@@ -5,6 +5,7 @@ import { DropzoneArea } from "material-ui-dropzone";
 import { DropzoneDialog } from "material-ui-dropzone";
 import { useDropzone } from "react-dropzone";
 
+
 function getModalStyle() {
   const top = 50;
   const left = 50;
@@ -138,6 +139,7 @@ export default function UploadReceipts(props) {
 
   const handleSave = files => {
     setOpen(false);
+    // this.props.handleSave(this.state);
     props.callBackFromTable(files);
   };
 
@@ -158,7 +160,7 @@ export default function UploadReceipts(props) {
         maxFileSize={5000000}
         onClose={handleClose}
         filesLimit={100}
-      />
+    />
     </div>
   );
 }
