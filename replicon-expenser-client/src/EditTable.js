@@ -10,10 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import { TableRowColumn } from "material-ui";
 import ReceiptModal from "./ReceiptModal";
 import RepliconForm from "./RepliconForm";
-import Button from "@material-ui/core/Button";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
-import Fab from "@material-ui/core/Fab";
+import FilePreview from "./FilePreview";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,36 +35,53 @@ const index123 = 0;
 
 export default ({ data, header }) => {
   // export default function EditTable() {
-  const classes = useStyles();
-
-  const [fileNames, setFileNames] = useState([]);
-  const [receiptRow, setReceiptRow] = useState([]);
-  const [fileLink, setFileLink] = useState([]);
+  //   const classes = useStyles();
+  const [open, setOpen] = useState(true);
+  const [storedFiles, setFiles] = useState([]);
 
   const callBackFromTable = files => {
-    const fullName = files.map(files => files.name);
-    const names = files.map(files => files.name.split("_"));
-    console.log("this is the names", names);
-    setFileNames(names);
-    setFileLink(fullName);
+    setFiles(
+      files.map(file => {
+        return {
+          Name: file.name,
+          NameParts: file.name.split("_"),
+          Link: window.URL.createObjectURL(file)
+        };
+      })
+    );
     //var data = names.split("_")
     console.log(names[0]);
   };
 
-  const createRow = event => {
-    setReceiptRow(event.target.value);
-  };
+  // const onImageChange = () => {
+  //     if (fileLink) {
+  //         setImage({image: URL.createObjectURL(fileLink)
+  //         });
+  //   }
+  //   var binaryData = [];
+  //   binaryData.push(fileLink);
+  //   window.URL.createObjectURL(new Blob(binaryData, { type: "/png" }));
+  // };
 
-  const handleDelete = index => {
-    console.log(index);
-    fileNames.splice(index, 1);
-    console.log(fileNames);
-  };
+  // const createRow = event => {
+  //   setReceiptRow(event.target.value);
+  // };
+
+  // const handleShowFile = () => {
+  //   if (open == true) {
+  //     setOpen(false);
+  //   } else {
+  //     setOpen(true);
+  //   }
+  // };
+
+  // const handleCloseFile = () => {
+  //   setOpen(false);
+  // };
 
   //const data = fileNames.split("_");
-  //console.log(data)
 
-  console.log("File Names: ", fileNames);
+  //console.log("File Names: ", fileNames);
 
   return (
     // <Paper className={classes.root}>
@@ -93,38 +107,21 @@ export default ({ data, header }) => {
           }}
         >
           {/* {data.map((x, i) => information(x, i, header))} */}
-          {fileNames.map((fileNames, index) => (
+          {storedFiles.map(file => (
             <TableRow>
-              {console.log(index)}
-              <TableCell> key = {`trc-${index}`}</TableCell>
-              <TableCell align="right">{fileNames[0]}</TableCell>
-              <TableCell align="right">{fileNames[1]}</TableCell>
-              <TableCell align="right">{fileNames[2]}</TableCell>
-              <TableCell align="right">{fileNames[3]}</TableCell>
+              <TableCell align="right">{file.NameParts[0]}</TableCell>
+              <TableCell align="right">{file.NameParts[1]}</TableCell>
+              <TableCell align="right">{file.NameParts[2]}</TableCell>
+              <TableCell align="right">{file.NameParts[3]}</TableCell>
               <TableCell align="right">
-                {"$" + parseFloat(fileNames[4]).toFixed(2)}
+                {"$" + parseFloat(file.NameParts[4]).toFixed(2)}
               </TableCell>
-              <TableCell align="right">{fileLink}</TableCell>
               <TableCell>
-                <Fab
-                  color="secondary"
-                  aria-label="edit"
-                  className={classes.fab}
-                  //   onClick={() => handleEdit(index)}
-                >
-                  <EditIcon />
-                </Fab>
-                <Fab
-                  color="primary"
-                  aria-label="delete"
-                  className={classes.fab}
-                  onClick={() => handleDelete(index)}
-                >
-                  <DeleteIcon />
-                </Fab>
+                <FilePreview fileLink={file.Link} fileName={file.Name} />
               </TableCell>
             </TableRow>
           ))}
+
           {/* value={receiptRow}
             // onClick={selectRequest} */}
         </TableBody>
