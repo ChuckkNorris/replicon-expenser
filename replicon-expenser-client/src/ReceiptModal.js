@@ -132,15 +132,21 @@ const useStyles = makeStyles(theme => ({
 // }
 export default function UploadReceipts(props) {
   const [open, setOpen] = useState();
+  const [selectedFile, setSelectedFile] = useState([]);
 
   const handleClose = () => {
     setOpen(false);
   };
 
   const handleSave = files => {
+      setSelectedFile(files)
+    // event.preventDefault();
     setOpen(false);
     // this.props.handleSave(this.state);
     props.callBackFromTable(files);
+    console.log(files);
+    // console.log(files[0])
+    
   };
 
   const handleOpen = () => {
