@@ -2,43 +2,35 @@ import React, { useState } from "react";
 
 
 
-export default class FilePreview extends React.Component {
-  state = { isOpen: false };
+export default function FilePreview(props) {
+  const [isOpen, setIsOpen] = useState(false)
 
-  handleShowDialog = () => {
-    this.setState({ isOpen: !this.state.isOpen });
-    console.log("clicked");
+  const handleShowDialog = () => {
+
+    setIsOpen(!isOpen)
   };
 
-  
-
-//   callBackFromTable = fileLink => {
-//     var fileButton = fileLink;
-//     //var data = names.split("_")
-//   };
-
-  render() {
     return (
       <div>
-        <a href="#" align="right" onClick={this.handleShowDialog}> 
-            Preview
+        <a href="#" align="right" onClick={handleShowDialog}> 
+            {props.fileName}
         </a>
-        {this.state.isOpen && (
+        {isOpen && (
           <dialog
             className="dialog"
             style={{ position: "absolute" }}
             open
-            onClick={this.handleShowDialog}
+            onClick={handleShowDialog}
           >
             <img
               className="image"
-              src="./2019-09-24_Meal_Lunch_Chipotle_$23.65.png"
-              onClick={this.handleShowDialog}
+              src= {props.fileLink}
+              onClick={handleShowDialog}
               alt="no image"
             />
           </dialog>
         )}
       </div>
     );
-  }
+  
 }
