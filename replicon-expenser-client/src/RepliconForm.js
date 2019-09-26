@@ -46,6 +46,7 @@ export default class RepliconForm extends Component {
               value={this.state.email}
               onChange={this.handleChange}
             />
+            <br />
           </Form.Group>
           <Form.Group controlId="password" bsSize="large">
             <label>Password</label>
@@ -54,6 +55,7 @@ export default class RepliconForm extends Component {
               onChange={this.handleChange}
               type="password"
             />
+            <br />
           </Form.Group>
           <Form.Group controlId="description" bsSize="large">
             <label>Description</label>
@@ -62,6 +64,7 @@ export default class RepliconForm extends Component {
               onChange={this.handleChange}
               type="description"
             />
+            <br />
           </Form.Group>
           <Form.Group controlId="client" bsSize="large">
             <label>Client</label>
@@ -70,6 +73,7 @@ export default class RepliconForm extends Component {
               onChange={this.handleChange}
               type="client"
             />
+            <br />
           </Form.Group>
           <Form.Group controlId="project" bsSize="large">
             <label>Project</label>
@@ -78,6 +82,7 @@ export default class RepliconForm extends Component {
               onChange={this.handleChange}
               type="project"
             />
+            <br />
           </Form.Group>
           <button type="button">Submit</button>
         </Form>
