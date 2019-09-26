@@ -11,6 +11,10 @@ import { TableRowColumn } from "material-ui";
 import ReceiptModal from "./ReceiptModal";
 import RepliconForm from "./RepliconForm";
 import FilePreview from "./FilePreview";
+import Button from "@material-ui/core/Button";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import Fab from "@material-ui/core/Fab";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,32 +27,39 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const information = (x, i, header) => (
-  <TableRow key={`tr-${i}`}>
-    {header.map((y, k) => (
-      <TableRowColumn key={`trc-${k}`}>{x[y.prop]}</TableRowColumn>
-    ))}
-  </TableRow>
-);
+// const information = (x, i, header) => (
+//   <TableRow key={`tr-${i}`}>
+//     {header.map((y, k) => (
+//       <TableRowColumn key={`trc-${k}`}>{x[y.prop]}</TableRowColumn>
+//     ))}
+//   </TableRow>
+// );
+
+// const handleDelete = index => {
+//   console.log(index);
+//   fileNames.splice(index, 1);
+//   console.log(fileNames);
+// };
 
 export default ({ data, header }) => {
   // export default function EditTable() {
-  //   const classes = useStyles();
+  const classes = useStyles();
   const [open, setOpen] = useState(true);
   const [storedFiles, setFiles] = useState([]);
 
   const callBackFromTable = files => {
-
-    setFiles(files.map(file => {
-      return {
-        Name: file.name,
-        NameParts: file.name.split("_"),
-        Link: window.URL.createObjectURL(file)
-      }
-    }));
+    setFiles(
+      files.map(file => {
+        return {
+          Name: file.name,
+          NameParts: file.name.split("_"),
+          Link: window.URL.createObjectURL(file)
+        };
+      })
+    );
     //var data = names.split("_")
+    // console.log(names[0]);
   };
-
 
   // const onImageChange = () => {
   //     if (fileLink) {
@@ -113,7 +124,33 @@ export default ({ data, header }) => {
               <TableCell align="right">
                 {"$" + parseFloat(file.NameParts[4]).toFixed(2)}
               </TableCell>
-              <TableCell><FilePreview fileLink={file.Link} fileName={file.Name} /></TableCell>
+              <TableCell>
+                <FilePreview fileLink={file.Link} fileName={file.Name} />
+              </TableCell>
+              <TableCell>
+                                                              
+                <Fab
+                  color="secondary"
+                  aria-label="edit"
+                  className={classes.fab} //
+                  //   onClick={() => handleEdit(index)}
+                >
+                                                                         
+                  <EditIcon />
+                                                                    
+                </Fab>
+                                                               
+                <Fab
+                  color="primary"
+                  aria-label="delete"
+                  className={classes.fab} //   onClick={() => handleDelete(index)}
+                >
+                                                                     
+                  <DeleteIcon />
+                                                                   
+                </Fab>{" "}
+                                                             
+              </TableCell>
             </TableRow>
           ))}
 
