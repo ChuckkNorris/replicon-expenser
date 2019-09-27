@@ -18,11 +18,18 @@ function getModalStyle() {
 
 function isValidDate(dateString) {
   var regEx = /^\d{4}-\d{2}-\d{2}$/;
-  if (!dateString.match(regEx)) return false;
   var d = new Date(dateString);
   var dNum = d.getTime();
-  if (!dNum && dNum !== 0) return false;
+  if (!dateString.match(regEx)) {
+    console.log('Not Valid Date')
+    return false;
+  } else if (!dNum && dNum !== 0) {
+    console.log('Not Valid Time')
+    return false;
+  } else {
+    console.log('Valid Date')
   return d.toISOString().slice(0, 10) === dateString;
+  }
 }
 
 const useStyles = makeStyles(theme => ({
@@ -131,14 +138,15 @@ const useStyles = makeStyles(theme => ({
 // }
 export default function UploadReceipts(props) {
   const [open, setOpen] = useState();
-
   const handleClose = () => {
     setOpen(false);
   };
 
-  // const handleChange = () => {
-
-  // }
+  const handleDrop = (files) => {
+     //isValidDate(props.NameParts[0])
+     //props.callBackFromTable(files)
+     //console.log(props.callBackFromTable(files))
+  };
 
   const handleSave = files => {
     // event.preventDefault();
@@ -155,10 +163,13 @@ export default function UploadReceipts(props) {
       <button type="button" onClick={handleOpen}>
         Upload Receipts
       </button>
+      <button type="submit" >
+        Submit
+      </button>
       <DropzoneDialog
         open={open}
         onSave={handleSave}
-        //onChange={handleChange}
+        //onDrop={handleDrop}
         acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
         showPreviews={true}
         maxFileSize={5000000}

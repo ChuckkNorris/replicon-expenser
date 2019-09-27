@@ -42,6 +42,7 @@ export default ({ data, header }) => {
   const [storedFiles, setFiles] = useState([]);
 
   const callBackFromTable = files => {
+    {console.log("check this",files)}
     setFiles(
       files.map(file => {
         return {
