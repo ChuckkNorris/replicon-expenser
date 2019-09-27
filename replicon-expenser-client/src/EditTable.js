@@ -57,11 +57,15 @@ export default ({ data, header }) => {
   };
 
   const handleDelete = (index, file) => {
-    console.log(index);
-    console.log(file);
+    console.log("this is the index we are at", index);
+    console.log("this is the row we are taking out", file);
     file.splice(index, 1);
     console.log(file);
   };
+
+  const handleEdit = (index, file) => {
+    console.log("I want to edit this file", index)
+  }
 
   // const onImageChange = () => {
   //     if (fileLink) {
@@ -130,28 +134,11 @@ export default ({ data, header }) => {
                 <FilePreview fileLink={file.Link} fileName={file.Name} />
               </TableCell>
               <TableCell>
-                                                              
-                <Fab
-                  color="secondary"
-                  aria-label="edit"
-                  className={classes.fab} //
-                  //   onClick={() => handleEdit(index)}
-                >
-                                                                         
-                  <EditIcon />
-                                                                    
-                </Fab>
-                                                               
-                <Fab
-                  color="primary"
-                  aria-label="delete"
-                  className={classes.fab}
-                  onClick={() => handleDelete(index, storedFiles)}
-                >
-                                                                     
-                  <DeleteIcon />
-                                                                   
-                </Fab>
+                                                                       
+                <EditIcon onClick={() => handleEdit(index, file)}/>
+                                                                 
+                <DeleteIcon onClick={() => handleDelete(index, storedFiles)} />
+                                                                 
                                                              
               </TableCell>
             </TableRow>
