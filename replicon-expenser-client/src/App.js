@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./App.css";
-import RepliconTable from "./RepliconTable";
 import RepliconForm from "./RepliconForm";
 import EditTable from "./EditTable";
 
@@ -28,9 +27,6 @@ class App extends Component {
         // }
         ></form>
         <RepliconForm />
-                 
-        {/* <RepliconTable /> */}
-         
         <EditTable
           data={this.state.data}
           header={[

@@ -38,7 +38,7 @@ export default class RepliconForm extends Component {
     return (
       <div className="RepliconForm">
         <Form onSubmit={this.handleSubmit}>
-          <Form.Group controlId="email" bsSize="large">
+          <Form.Group controlId="email" bssize="large">
             <label>Email </label>
             <Form.Control
               autoFocus
@@ -46,43 +46,38 @@ export default class RepliconForm extends Component {
               value={this.state.email}
               onChange={this.handleChange}
             />
-            <br />
           </Form.Group>
-          <Form.Group controlId="password" bsSize="large">
+          <Form.Group controlId="password" bssize="large">
             <label>Password</label>
             <Form.Control
               value={this.state.password}
               onChange={this.handleChange}
               type="password"
             />
-            <br />
           </Form.Group>
-          <Form.Group controlId="description" bsSize="large">
+          <Form.Group controlId="description" bssize="large">
             <label>Description</label>
             <Form.Control
               value={this.state.description}
               onChange={this.handleChange}
               type="description"
             />
-            <br />
           </Form.Group>
-          <Form.Group controlId="client" bsSize="large">
+          <Form.Group controlId="client" bssize="large">
             <label>Client</label>
             <Form.Control
               value={this.state.client}
               onChange={this.handleChange}
               type="client"
             />
-            <br />
           </Form.Group>
-          <Form.Group controlId="project" bsSize="large">
+          <Form.Group controlId="project" bssize="large">
             <label>Project</label>
             <Form.Control
               value={this.state.project}
               onChange={this.handleChange}
               type="project"
             />
-            <br />
           </Form.Group>
           <button type="button">Submit</button>
         </Form>

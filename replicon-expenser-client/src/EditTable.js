@@ -7,11 +7,8 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { TableRowColumn } from "material-ui";
 import ReceiptModal from "./ReceiptModal";
-import RepliconForm from "./RepliconForm";
 import FilePreview from "./FilePreview";
-import Button from "@material-ui/core/Button";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Fab from "@material-ui/core/Fab";
@@ -27,21 +24,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-// const information = (x, i, header) => (
-//   <TableRow key={`tr-${i}`}>
-//     {header.map((y, k) => (
-//       <TableRowColumn key={`trc-${k}`}>{x[y.prop]}</TableRowColumn>
-//     ))}
-//   </TableRow>
-// );
-
 export default ({ data, header }) => {
-  // export default function EditTable() {
   const classes = useStyles();
   const [open, setOpen] = useState(true);
   const [storedFiles, setFiles] = useState([]);
 
   const callBackFromTable = files => {
+    //Input File and split file into array of elements
     setFiles(
       files.map(file => {
         return {
@@ -51,51 +40,14 @@ export default ({ data, header }) => {
         };
       })
     );
-
-    //var data = names.split("_")
-    // console.log(names[0]);
   };
 
   const handleDelete = (index, file) => {
-    console.log(index);
-    console.log(file);
     file.splice(index, 1);
     console.log(file);
   };
 
-  // const onImageChange = () => {
-  //     if (fileLink) {
-  //         setImage({image: URL.createObjectURL(fileLink)
-  //         });
-  //   }
-  //   var binaryData = [];
-  //   binaryData.push(fileLink);
-  //   window.URL.createObjectURL(new Blob(binaryData, { type: "/png" }));
-  // };
-
-  // const createRow = event => {
-  //   setReceiptRow(event.target.value);
-  // };
-
-  // const handleShowFile = () => {
-  //   if (open == true) {
-  //     setOpen(false);
-  //   } else {
-  //     setOpen(true);
-  //   }
-  // };
-
-  // const handleCloseFile = () => {
-  //   setOpen(false);
-  // };
-
-  //const data = fileNames.split("_");
-
-  //console.log("File Names: ", fileNames);
-
   return (
-    // <Paper className={classes.root}>
-    //   <Table className={classes.table}>
     <Paper>
       <Table>
         <TableHead>
@@ -107,20 +59,19 @@ export default ({ data, header }) => {
         </TableHead>
 
         <TableBody
-          inputProps={{
-            dateIncurred: "receiptRow.dateIncurred",
-            expenseType: "receiptRow.expenseType",
-            purpose: "receiptRow.purpose",
-            place: "receiptRow.place",
-            amount: "receiptRow.amount",
-            files: "receiptRow.files"
-          }}
+        //   inputProps={{
+        //     dateIncurred: "receiptRow.dateIncurred",
+        //     expenseType: "receiptRow.expenseType",
+        //     purpose: "receiptRow.purpose",
+        //     place: "receiptRow.place",
+        //     amount: "receiptRow.amount",
+        //     files: "receiptRow.files"
+        //   }}
         >
-          {/* {data.map((x, i) => information(x, i, header))} */}
           {storedFiles.map((file, index) => (
             <TableRow>
-              <TableCell align="right">{file.NameParts[0]}</TableCell>
-              <TableCell align="right">{file.NameParts[1]}</TableCell>
+              <TableCell align="right">{file.NameParts[index]}</TableCell>
+              {/* <TableCell align="right">{file.NameParts[1]}</TableCell>
               <TableCell align="right">{file.NameParts[2]}</TableCell>
               <TableCell align="right">{file.NameParts[3]}</TableCell>
               <TableCell align="right">
@@ -128,7 +79,7 @@ export default ({ data, header }) => {
               </TableCell>
               <TableCell>
                 <FilePreview fileLink={file.Link} fileName={file.Name} />
-              </TableCell>
+              </TableCell> */}
               <TableCell>
                                                               
                 <Fab
@@ -156,9 +107,6 @@ export default ({ data, header }) => {
               </TableCell>
             </TableRow>
           ))}
-
-          {/* value={receiptRow}
-            // onClick={selectRequest} */}
         </TableBody>
       </Table>
       <ReceiptModal callBackFromTable={callBackFromTable} />

@@ -136,10 +136,6 @@ export default function UploadReceipts(props) {
     setOpen(false);
   };
 
-  // const handleChange = () => {
-
-  // }
-
   const handleSave = files => {
     // event.preventDefault();
     setOpen(false);
@@ -158,7 +154,7 @@ export default function UploadReceipts(props) {
       <DropzoneDialog
         open={open}
         onSave={handleSave}
-        //onChange={handleChange}
+        // onDrop={handleDrop}
         acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
         showPreviews={true}
         maxFileSize={5000000}
