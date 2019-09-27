@@ -35,12 +35,6 @@ const useStyles = makeStyles(theme => ({
 //   </TableRow>
 // );
 
-// const handleDelete = index => {
-//   console.log(index);
-//   fileNames.splice(index, 1);
-//   console.log(fileNames);
-// };
-
 export default ({ data, header }) => {
   // export default function EditTable() {
   const classes = useStyles();
@@ -57,8 +51,16 @@ export default ({ data, header }) => {
         };
       })
     );
+
     //var data = names.split("_")
     // console.log(names[0]);
+  };
+
+  const handleDelete = (index, file) => {
+    console.log(index);
+    console.log(file);
+    file.splice(index, 1);
+    console.log(file);
   };
 
   // const onImageChange = () => {
@@ -115,7 +117,7 @@ export default ({ data, header }) => {
           }}
         >
           {/* {data.map((x, i) => information(x, i, header))} */}
-          {storedFiles.map(file => (
+          {storedFiles.map((file, index) => (
             <TableRow>
               <TableCell align="right">{file.NameParts[0]}</TableCell>
               <TableCell align="right">{file.NameParts[1]}</TableCell>
@@ -143,12 +145,13 @@ export default ({ data, header }) => {
                 <Fab
                   color="primary"
                   aria-label="delete"
-                  className={classes.fab} //   onClick={() => handleDelete(index)}
+                  className={classes.fab}
+                  onClick={() => handleDelete(index, storedFiles)}
                 >
                                                                      
                   <DeleteIcon />
                                                                    
-                </Fab>{" "}
+                </Fab>
                                                              
               </TableCell>
             </TableRow>

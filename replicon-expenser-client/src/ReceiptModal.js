@@ -134,7 +134,6 @@ export default function UploadReceipts(props) {
 
   const handleClose = () => {
     setOpen(false);
-    console.log("closed popup");
   };
 
   // const handleChange = () => {
