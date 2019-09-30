@@ -275,7 +275,7 @@ const createRepliconExpenser = context => {
           project
         );
         await page.waitFor(500);
-        await browser.close();
+        // await browser.close();
         resolve();
       });
       await page.click("[title=Replicon]");

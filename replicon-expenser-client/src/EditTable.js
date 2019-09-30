@@ -8,13 +8,18 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { TableRowColumn } from "material-ui";
-import ReceiptModal from "./ReceiptModal";
+import ReceiptModal from "./ReceiptUpload";
 import RepliconForm from "./RepliconForm";
 import FilePreview from "./FilePreview";
 import Button from "@material-ui/core/Button";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Fab from "@material-ui/core/Fab";
+import { DropzoneDialog } from "material-ui-dropzone";
+import { useDropzone } from "react-dropzone";
+import { DropzoneArea } from "material-ui-dropzone"; 
+//import UploadReceipts from "../src/ReceiptModal";
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -57,15 +62,31 @@ export default ({ data, header }) => {
   };
 
   const handleDelete = (index, file) => {
-    console.log("this is the index we are at", index);
-    console.log("this is the row we are taking out", file);
-    file.splice(index, 1);
-    console.log(file);
+    let tempFile = [...file]
+    if(index !== -1){
+      tempFile.splice(index, 1);
+      setFiles(tempFile)
+      console.log('File: ', tempFile);
+    }
+    // console.log("this is the index we are at", index);
+    // console.log("this is the row we are taking out", file);
+    // setFiles(file.slice(index, 1));
+    // console.log(file);
   };
 
   const handleEdit = (index, file) => {
     console.log("I want to edit this file", index)
   }
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  // const handleSave = files => {
+  //   // event.preventDefault();
+  //   setOpen(false);
+  //   props.callBackFromTable(files);
+  // };
 
   // const onImageChange = () => {
   //     if (fileLink) {
@@ -100,6 +121,19 @@ export default ({ data, header }) => {
   return (
     // <Paper className={classes.root}>
     //   <Table className={classes.table}>
+      <div>
+        <ReceiptModal callBackFromTable={callBackFromTable} />
+      {/* <DropzoneArea
+        open={open}
+        onDrop={handleSave}
+        //onChange={handleChange}
+        acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
+        showPreviewsInDropzone={true}
+        maxFileSize={5000000}
+        onClose={handleClose}
+        filesLimit={100}
+      /> */}
+    
     <Paper>
       <Table>
         <TableHead>
@@ -148,7 +182,9 @@ export default ({ data, header }) => {
             // onClick={selectRequest} */}
         </TableBody>
       </Table>
-      <ReceiptModal callBackFromTable={callBackFromTable} />
+      
     </Paper>
+    </div>
   );
 };
+

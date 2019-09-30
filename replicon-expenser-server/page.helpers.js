@@ -82,7 +82,7 @@ const setPuppetPage = page => {
   });
 };
 
-const createPuppetPage = async (headless = true) => {
+const createPuppetPage = async (headless = false) => {
   console.log("Opening browser...");
   // executablePath: 'google-chrome-unstable', 
   const browser = await puppeteer.launch({ headless, args: [ '--no-sandbox', '--disable-setuid-sandbox' ] });
