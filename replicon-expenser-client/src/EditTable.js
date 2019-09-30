@@ -68,7 +68,7 @@ export default ({ data, header }) => {
           {storedFiles.map((file, index) => (
             <TableRow>
               <TableCell align="right">{file.NameParts[index]}</TableCell>
-              {/* <TableCell align="right">{file.NameParts[1]}</TableCell>
+              <TableCell align="right">{file.NameParts[1]}</TableCell>
               <TableCell align="right">{file.NameParts[2]}</TableCell>
               <TableCell align="right">{file.NameParts[3]}</TableCell>
               <TableCell align="right">
@@ -76,7 +76,7 @@ export default ({ data, header }) => {
               </TableCell>
               <TableCell>
                 <FilePreview fileLink={file.Link} fileName={file.Name} />
-              </TableCell> */}
+              </TableCell>
               <TableCell>
                                                                        
                 <EditIcon />
@@ -88,7 +88,6 @@ export default ({ data, header }) => {
               </TableCell>
             </TableRow>
           ))}
-          {/* </TableBody> */}
         </Table>
       </Paper>
     </div>

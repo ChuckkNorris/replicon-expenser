@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { DropzoneArea } from "material-ui-dropzone";
 
 export default function UploadReceipts(props) {
@@ -20,14 +20,11 @@ export default function UploadReceipts(props) {
 
   return (
     <div>
-      <button type="button" onClick={handleOpen}>
-        Upload Receipts
-      </button>
       <DropzoneArea
         open={open}
         onChange={handleSave}
         acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
-        showPreviewsInDropzone={false}        
+        showPreviewsInDropzone={false}
         maxFileSize={5000000}
         onClose={handleClose}
         filesLimit={100}
