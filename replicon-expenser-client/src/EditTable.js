@@ -17,9 +17,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import Fab from "@material-ui/core/Fab";
 import { DropzoneDialog } from "material-ui-dropzone";
 import { useDropzone } from "react-dropzone";
-import { DropzoneArea } from "material-ui-dropzone"; 
+import { DropzoneArea } from "material-ui-dropzone";
 //import UploadReceipts from "../src/ReceiptModal";
-
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -47,7 +46,9 @@ export default ({ data, header }) => {
   const [storedFiles, setFiles] = useState([]);
 
   const callBackFromTable = files => {
-    {console.log("check this",files)}
+    {
+      console.log("check this", files);
+    }
     setFiles(
       files.map(file => {
         return {
@@ -63,11 +64,11 @@ export default ({ data, header }) => {
   };
 
   const handleDelete = (index, file) => {
-    let tempFile = [...file]
-    if(index !== -1){
+    let tempFile = [...file];
+    if (index !== -1) {
       tempFile.splice(index, 1);
-      setFiles(tempFile)
-      console.log('File: ', tempFile);
+      setFiles(tempFile);
+      console.log("File: ", tempFile);
     }
     // console.log("this is the index we are at", index);
     // console.log("this is the row we are taking out", file);
@@ -76,8 +77,8 @@ export default ({ data, header }) => {
   };
 
   const handleEdit = (index, file) => {
-    console.log("I want to edit this file", index)
-  }
+    console.log("I want to edit this file", index);
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -122,8 +123,8 @@ export default ({ data, header }) => {
   return (
     // <Paper className={classes.root}>
     //   <Table className={classes.table}>
-      <div>
-        <ReceiptModal callBackFromTable={callBackFromTable} />
+    <div>
+      <ReceiptModal callBackFromTable={callBackFromTable} />
       {/* <DropzoneArea
         open={open}
         onDrop={handleSave}
@@ -134,58 +135,58 @@ export default ({ data, header }) => {
         onClose={handleClose}
         filesLimit={100}
       /> */}
-    
-    <Paper>
-      <Table>
-        <TableHead>
-          <TableRow>
-            {header.map((x, i) => (
-              <TableCell key={`thc-${i}`}>{x.name}</TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
 
-        <TableBody
-          inputProps={{
-            dateIncurred: "receiptRow.dateIncurred",
-            expenseType: "receiptRow.expenseType",
-            purpose: "receiptRow.purpose",
-            place: "receiptRow.place",
-            amount: "receiptRow.amount",
-            files: "receiptRow.files"
-          }}
-        >
-          {/* {data.map((x, i) => information(x, i, header))} */}
-          {storedFiles.map((file, index) => (
+      <Paper>
+        <Table>
+          <TableHead>
             <TableRow>
-              <TableCell align="right">{file.NameParts[0]}</TableCell>
-              <TableCell align="right">{file.NameParts[1]}</TableCell>
-              <TableCell align="right">{file.NameParts[2]}</TableCell>
-              <TableCell align="right">{file.NameParts[3]}</TableCell>
-              <TableCell align="right">
-                {"$" + parseFloat(file.NameParts[4]).toFixed(2)}
-              </TableCell>
-              <TableCell>
-                <FilePreview fileLink={file.Link} fileName={file.Name} />
-              </TableCell>
-              <TableCell>
-                                                                       
-                <EditIcon onClick={() => handleEdit(index, file)}/>
-                                                                 
-                <DeleteIcon onClick={() => handleDelete(index, storedFiles)} />
-                                                                 
-                                                             
-              </TableCell>
+              {header.map((x, i) => (
+                <TableCell key={`thc-${i}`}>{x.name}</TableCell>
+              ))}
             </TableRow>
-          ))}
+          </TableHead>
 
-          {/* value={receiptRow}
+          <TableBody
+            inputProps={{
+              dateIncurred: "receiptRow.dateIncurred",
+              expenseType: "receiptRow.expenseType",
+              purpose: "receiptRow.purpose",
+              place: "receiptRow.place",
+              amount: "receiptRow.amount",
+              files: "receiptRow.files"
+            }}
+          >
+            {/* {data.map((x, i) => information(x, i, header))} */}
+            {storedFiles.map((file, index) => (
+              <TableRow>
+                <TableCell align="right">{file.NameParts[0]}</TableCell>
+                <TableCell align="right">{file.NameParts[1]}</TableCell>
+                <TableCell align="right">{file.NameParts[2]}</TableCell>
+                <TableCell align="right">{file.NameParts[3]}</TableCell>
+                <TableCell align="right">
+                  {"$" + parseFloat(file.NameParts[4]).toFixed(2)}
+                </TableCell>
+                <TableCell>
+                  <FilePreview fileLink={file.Link} fileName={file.Name} />
+                </TableCell>
+                <TableCell>
+                                                                         
+                  <EditIcon onClick={() => handleEdit(index, file)} />
+                                                                   
+                  <DeleteIcon
+                    onClick={() => handleDelete(index, storedFiles)}
+                  />
+                                                                   
+                                                               
+                </TableCell>
+              </TableRow>
+            ))}
+
+            {/* value={receiptRow}
             // onClick={selectRequest} */}
-        </TableBody>
-      </Table>
-      
-    </Paper>
+          </TableBody>
+        </Table>
+      </Paper>
     </div>
   );
 };
-
