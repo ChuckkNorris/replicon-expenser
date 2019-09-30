@@ -2,16 +2,16 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import ReceiptModal from "./ReceiptModal";
+import ReceiptUpload from "./ReceiptUpload";
+
 import FilePreview from "./FilePreview";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import Fab from "@material-ui/core/Fab";
+import RepliconForm from "./RepliconForm";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,12 +25,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default ({ data, header }) => {
-  const classes = useStyles();
-  const [open, setOpen] = useState(true);
+  // export default function EditTable() {
   const [storedFiles, setFiles] = useState([]);
 
   const callBackFromTable = files => {
-    //Input File and split file into array of elements
+    console.log("check this", files);
     setFiles(
       files.map(file => {
         return {
@@ -43,31 +42,29 @@ export default ({ data, header }) => {
   };
 
   const handleDelete = (index, file) => {
-    file.splice(index, 1);
-    console.log(file);
+    var tempFile = [...file];
+    if (index !== -1) {
+      tempFile.splice(index, 1);
+      setFiles(tempFile);
+      console.log("File:", tempFile);
+    }
+    console.log("Index: ", index);
   };
 
   return (
-    <Paper>
-      <Table>
-        <TableHead>
-          <TableRow>
-            {header.map((x, i) => (
-              <TableCell key={`thc-${i}`}>{x.name}</TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
+    <div>
+      <Paper>
+        <RepliconForm storedFiles={storedFiles} />
+        <ReceiptUpload callBackFromTable={callBackFromTable} />
+        <Table>
+          <TableHead>
+            <TableRow>
+              {header.map((x, i) => (
+                <TableCell key={`thc-${i}`}>{x.name}</TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
 
-        <TableBody
-        //   inputProps={{
-        //     dateIncurred: "receiptRow.dateIncurred",
-        //     expenseType: "receiptRow.expenseType",
-        //     purpose: "receiptRow.purpose",
-        //     place: "receiptRow.place",
-        //     amount: "receiptRow.amount",
-        //     files: "receiptRow.files"
-        //   }}
-        >
           {storedFiles.map((file, index) => (
             <TableRow>
               <TableCell align="right">{file.NameParts[index]}</TableCell>
@@ -81,35 +78,19 @@ export default ({ data, header }) => {
                 <FilePreview fileLink={file.Link} fileName={file.Name} />
               </TableCell> */}
               <TableCell>
-                                                              
-                <Fab
-                  color="secondary"
-                  aria-label="edit"
-                  className={classes.fab} //
-                  //   onClick={() => handleEdit(index)}
-                >
-                                                                         
-                  <EditIcon />
-                                                                    
-                </Fab>
-                                                               
-                <Fab
-                  color="primary"
-                  aria-label="delete"
-                  className={classes.fab}
-                  onClick={() => handleDelete(index, storedFiles)}
-                >
-                                                                     
-                  <DeleteIcon />
-                                                                   
-                </Fab>
+                                                                       
+                <EditIcon />
+                {/* onClick={() => handleEdit(index, file)} */}
+                                                                 
+                <DeleteIcon onClick={() => handleDelete(index, storedFiles)} />
+                                                                 
                                                              
               </TableCell>
             </TableRow>
           ))}
-        </TableBody>
-      </Table>
-      <ReceiptModal callBackFromTable={callBackFromTable} />
-    </Paper>
+          {/* </TableBody> */}
+        </Table>
+      </Paper>
+    </div>
   );
 };

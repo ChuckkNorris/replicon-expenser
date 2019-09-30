@@ -7,7 +7,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
-import ReceiptModal from "./ReceiptModal";
+import ReceiptModal from "./ReceiptUpload";
 
 const headers = [
   { id: "date", label: "Date Incurred", minWidth: 100 },

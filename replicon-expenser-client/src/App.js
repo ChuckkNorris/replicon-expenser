@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./App.css";
-import RepliconForm from "./RepliconForm";
 import EditTable from "./EditTable";
 
 const createExpenseReport = () => {};
@@ -26,7 +25,9 @@ class App extends Component {
         //   })
         // }
         ></form>
-        <RepliconForm />
+                 
+        {/* <RepliconTable /> */}
+         
         <EditTable
           data={this.state.data}
           header={[
