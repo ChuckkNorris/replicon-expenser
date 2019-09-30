@@ -20,25 +20,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const useStyles = makeStyles(theme => ({
-  image: {
-    position: "absolute",
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: "2px solid #D3D3D3",
-    //boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3)
-  },
-  paper: {
-    position: "absolute",
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: "none",
-    //boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3)
-  }
-}));
-
 export default function FilePreview(props) {
   const [isOpen, setIsOpen] = useState(false);
   const classes = useStyles();
