@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import "./App.css";
-import RepliconTable from "./RepliconTable";
-import RepliconForm from "./RepliconForm";
 import EditTable from "./EditTable";
 
 const createExpenseReport = () => {};
@@ -27,7 +25,6 @@ class App extends Component {
         //   })
         // }
         ></form>
-        
                  
         {/* <RepliconTable /> */}
          

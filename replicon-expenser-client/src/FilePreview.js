@@ -38,7 +38,7 @@ export default function FilePreview(props) {
             className={classes.image}
             src={props.fileLink}
             onClick={handleShowDialog}
-            alt="no image"
+            alt="not found"
           />
         </dialog>
       )}
