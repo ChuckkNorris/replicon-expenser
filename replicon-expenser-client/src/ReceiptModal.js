@@ -158,17 +158,15 @@ export default function UploadReceipts(props) {
     setOpen(true);
   };
 
+
   return (
     <div>
       <button type="button" onClick={handleOpen}>
         Upload Receipts
       </button>
-      <button type="submit" >
-        Submit
-      </button>
       <DropzoneDialog
         open={open}
-        onSave={handleSave}
+        onChange={handleSave}
         //onDrop={handleDrop}
         acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
         showPreviews={true}
