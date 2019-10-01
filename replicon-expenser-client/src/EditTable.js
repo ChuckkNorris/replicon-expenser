@@ -69,7 +69,7 @@ export default ({ data, header }) => {
 
           {storedFiles.map((file, index) => (
             <TableRow>
-              <TableCell align="right">{file.NameParts[0]}</TableCell>
+              <TableCell align="right">{file.NameParts[index]}</TableCell>
               <TableCell align="right">{file.NameParts[1]}</TableCell>
               <TableCell align="right">{file.NameParts[2]}</TableCell>
               <TableCell align="right">{file.NameParts[3]}</TableCell>
@@ -90,7 +90,6 @@ export default ({ data, header }) => {
               </TableCell>
             </TableRow>
           ))}
-          {/* </TableBody> */}
         </Table>
       </Paper>
     </div>
