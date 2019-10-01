@@ -27,9 +27,11 @@ const useStyles = makeStyles(theme => ({
 export default ({ data, header }) => {
   // export default function EditTable() {
   const [storedFiles, setFiles] = useState([]);
+  const [wholeFile, setWholeFile] = useState();
 
   const callBackFromTable = files => {
     console.log("check this", files);
+    setWholeFile(files);
     setFiles(
       files.map(file => {
         return {
@@ -54,7 +56,7 @@ export default ({ data, header }) => {
   return (
     <div>
       <Paper>
-        <RepliconForm storedFiles={storedFiles} />
+        <RepliconForm wholeFile={wholeFile} />
         <ReceiptUpload callBackFromTable={callBackFromTable} />
         <Table>
           <TableHead>

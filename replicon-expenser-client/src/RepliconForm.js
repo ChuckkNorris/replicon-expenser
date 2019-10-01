@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
+import axios from 'axios';
 
-export default function RepliconForm() {
+export default function RepliconForm(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [encodedPassword, setEncodedPassword] = useState("");
@@ -29,27 +30,46 @@ export default function RepliconForm() {
     setDescription(event.target.value);
   };
 
-  const handleSubmit = props => {
-    console.log("Button Clicked");
-    fetch(`https://localhost:3000/api/create-expense-report`, {
-      method: "POST",
-      headers: {
-        //figure out how to configure this
-        "Content-Type": "application/form-data; charset=utf-8"
-      },
-      body: JSON.stringify({
-        description: "test",
-        client: "G&A",
-        project: "Administration",
-        receiptFiles: props.storedFiles, // link to files
-        // receiptFiles: storedFiles,
-        email: "muizz.soomar@credera.com",
-        password: "RkBzdGNhcnMxMjM="
+  const handleSubmit = event => {
+    event.preventDefault();
+    console.log('WholeFile: ', props.wholeFile);
+    axios({
+          method: 'post',
+          url: `http://localhost:3005/api/create-expense-report`,
+          headers: {
+            //   //   //figure out how to configure this
+            'Content-Type': "application/form-data; charset=utf-8"
+             },
+          data: {
+            description: "test",
+            client: "G&A",
+            project: "Training",
+            receiptFiles: props.wholeFile, // link to files
+            // receiptFiles: storedFiles,
+            email: "megan.moore@credera.com",
+            password: "JGNvdXRFbGxpZTEh"
+        }
       })
-    })
-      .then(response => response.json())
+    // axios({
+    //   method: "POST",
+    //   url: `https://localhost:3005/api/create-expense-report`, 
+    //   // headers: {
+    //   //   //figure out how to configure this
+    //   //   "Content-Type": "application/form-data; charset=utf-8"
+    //   // },
+    //   data: {
+    //     "description": "test",
+    //     "client": "G&A",
+    //     "project": "Training",
+    //     "receiptFiles": props.storedFiles, // link to files
+    //     // receiptFiles: storedFiles,
+    //     "email": "megan.moore@credera.com",
+    //     "password": "JGNvdXRFbGxpZTEh"
+    //   }
+    // })
+      //.then(response => response.json())
       .then(response => {
-        console.log(response.message);
+        console.log("Response: ",response);
         // if (response.message === true) {
         //   console.log('reciepts have been uploaded');
         //   let set = response.set;
