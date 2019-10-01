@@ -20,9 +20,7 @@ export default function UploadReceipts(props) {
 
   return (
     <div>
-      <button type="button" onClick={handleOpen}>
-        Upload Receipts
-      </button>
+   
       <DropzoneArea
         open={open}
         onChange={handleSave}
