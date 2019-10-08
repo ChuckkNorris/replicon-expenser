@@ -9,13 +9,6 @@ export default function RepliconForm(props) {
   const [client, setClient] = useState("");
   const [project, setProject] = useState("");
   const [description, setDescription] = useState("");
-  // const [login, setLogin] = ({
-  //   email: "",
-  //   password: "",
-  //   description: "",
-  //   client: "",
-  //   project: ""
-  // });
 
 
 
@@ -47,7 +40,7 @@ export default function RepliconForm(props) {
     let formData = new FormData()
 
     formData.append("email", email);    //"muizz.soomar@credera.com"
-    formData.append("password", password);    //""
+    formData.append("password", password);    //"RkBzdGNhcnMxMjM0"
     for (var x = 0; x < files.length; x++) {
       formData.append("receipts", files[x]);
       console.log("File num:" + x);

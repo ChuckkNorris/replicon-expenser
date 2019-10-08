@@ -36,24 +36,15 @@ export default ({ data, header }) => {
 
 
   const callBackFromTable = files => {
-
     setWholeFile(files);
+
+
     setTempFiles(files);
-    console.log("this is the files:", files)
-
     files.map((tempfile, i) => {
-      console.log("File from the file list:", tempfile)
-      if (tempFiles.filter(x => x.name === tempfile.name).length >= 1) {
-        console.log("here is tempfile, what we are using to check (main):", tempfile)
-        console.log("The File:", tempFiles, "already exists")
-
-
-      }
-      else {
-        console.log("The File:", tempFiles, "does not exist")
-        console.log("putting", tempfile, "into Stored Files");
+      if (!tempFiles.filter(x => x.name === tempfile.name).length >= 1) {
         setFiles(         //run setFiles so that storedFiles is updated
-          files.map(file => {
+          files.map((file, i) => {
+            console.log("index on inner map", i);
             return {
               Name: file.name,
               NameParts: file.name.split("_"),
@@ -62,10 +53,11 @@ export default ({ data, header }) => {
           })
         );
       }
+      else {
+        files.splice(i, 1);
+      }
     })
   };
-  console.log("Whole File:", wholeFile)
-  console.log("Stored Files", storedFiles);
 
 
 
