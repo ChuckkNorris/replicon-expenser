@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
-import axios from 'axios';
+import axios from "axios";
 
 export default function RepliconForm(props) {
   const [email, setEmail] = useState("");
@@ -9,6 +9,15 @@ export default function RepliconForm(props) {
   const [client, setClient] = useState("");
   const [project, setProject] = useState("");
   const [description, setDescription] = useState("");
+  // const [login, setLogin] = ({
+  //   email: "",
+  //   password: "",
+  //   description: "",
+  //   client: "",
+  //   project: ""
+  // });
+
+
 
   const handleEmailChange = event => {
     setEmail(event.target.value);
@@ -32,110 +41,83 @@ export default function RepliconForm(props) {
 
   const handleSubmit = event => {
     event.preventDefault();
-    console.log('WholeFile: ', props.wholeFile);
-    axios({
-          method: 'post',
-          url: `http://localhost:3005/api/create-expense-report`,
-          headers: {
-            //   //   //figure out how to configure this
-            'Content-Type': "application/form-data; charset=utf-8"
-             },
-          data: {
-            description: "test",
-            client: "G&A",
-            project: "Training",
-            receiptFiles: props.wholeFile, // link to files
-            // receiptFiles: storedFiles,
-            email: "megan.moore@credera.com",
-            password: "JGNvdXRFbGxpZTEh"
-        }
-      })
-    // axios({
-    //   method: "POST",
-    //   url: `https://localhost:3005/api/create-expense-report`, 
-    //   // headers: {
-    //   //   //figure out how to configure this
-    //   //   "Content-Type": "application/form-data; charset=utf-8"
-    //   // },
-    //   data: {
-    //     "description": "test",
-    //     "client": "G&A",
-    //     "project": "Training",
-    //     "receiptFiles": props.storedFiles, // link to files
-    //     // receiptFiles: storedFiles,
-    //     "email": "megan.moore@credera.com",
-    //     "password": "JGNvdXRFbGxpZTEh"
-    //   }
-    // })
-      //.then(response => response.json())
-      .then(response => {
-        console.log("Response: ",response);
-        // if (response.message === true) {
-        //   console.log('reciepts have been uploaded');
-        //   let set = response.set;
-        //   set.key = set._id;
-        //   this.getSets();
-        // } else {
-        //   console.log('reciepts are not uploaded');
-        // }
-      })
-      .catch(error => {
-        console.log("Could not save set!");
-        console.log(error);
-      });
+
+    let files = props.wholeFile;
+
+    let formData = new FormData()
+
+    formData.append("email", email);    //"muizz.soomar@credera.com"
+    formData.append("password", password);    //""
+    for (var x = 0; x < files.length; x++) {
+      formData.append("receipts", files[x]);
+      console.log("File num:" + x);
+    }
+    formData.append("description", description);    //"Muizz is this going to wwork"
+    formData.append("client", client);    //"G&A"
+    formData.append("project", project);    //"Training"
+    const response = axios({
+      method: 'post',
+      url: 'http://localhost:3005/api/create-expense-report',
+      data: formData
+    })
   };
 
   return (
     <div>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="email" bssize="large">
-          <label>Email </label>
+          <label> Email </label>{" "}
           <Form.Control
             autoFocus
+            placeholder="email"
             type="email"
             value={email}
             onChange={handleEmailChange}
-          />
+          />{" "}
           <br />
-        </Form.Group>
+        </Form.Group>{" "}
         <Form.Group controlId="password" bssize="large">
-          <label>Password</label>
+          <label> Password </label>{" "}
           <Form.Control
+            placeholder="password"
             value={password}
             onChange={handlePasswordChange}
             type="password"
           />
           <br />
-        </Form.Group>
+        </Form.Group>{" "}
         <Form.Group controlId="description" bssize="large">
-          <label>Description</label>
+          <label> Description </label>{" "}
           <Form.Control
+            placeholder="description"
             value={description}
             onChange={handleDescriptionChange}
             type="description"
           />
           <br />
-        </Form.Group>
+        </Form.Group>{" "}
         <Form.Group controlId="client" bssize="large">
-          <label>Client</label>
+          <label> Client </label>{" "}
           <Form.Control
+            placeholder="client"
             value={client}
             onChange={handleClientChange}
             type="client"
           />
           <br />
-        </Form.Group>
+        </Form.Group>{" "}
         <Form.Group controlId="project" bssize="large">
-          <label>Project</label>
+          <label> Project </label>{" "}
           <Form.Control
+            placeholder="project"
             value={project}
             onChange={handleProjectChange}
             type="project"
           />
           <br />
-        </Form.Group>
-        <button onClick={e => handleSubmit(e)}>Submit</button>
-      </Form>
+        </Form.Group>{" "}
+        <button onClick={e => handleSubmit(e)}> Submit </button>{" "}
+      </Form>{" "}
     </div>
   );
 }
@@ -144,11 +126,11 @@ export default function RepliconForm(props) {
 //     super(props);
 
 //     this.state = {
-//       email: "",
-//       password: "",
-//       description: "",
-//       client: "",
-//       project: ""
+      // email: "",
+      // password: "",
+      // description: "",
+      // client: "",
+      // project: ""
 //     };
 //   }
 
