@@ -36,12 +36,21 @@ export default ({ data, header }) => {
 
 
   const callBackFromTable = files => {
-    setWholeFile(files);
+    // setWholeFile(files);
 
 
     setTempFiles(files);
+    console.log("this is the files:", files)
+
     files.map((tempfile, i) => {
       if (!tempFiles.filter(x => x.name === tempfile.name).length >= 1) {
+        alert("yay it should be here")
+        console.log("index on outer map", i)
+        console.log("here is tempfile, what we are using to check (main):", tempfile)
+        console.log("The File:", tempFiles, "already exists")
+
+        setWholeFile(files);
+
         setFiles(         //run setFiles so that storedFiles is updated
           files.map((file, i) => {
             console.log("index on inner map", i);
@@ -52,12 +61,29 @@ export default ({ data, header }) => {
             };
           })
         );
-      }
-      else {
+
+
+      } else {
+        alert('went into else')
         files.splice(i, 1);
+        console.log("Else Index:", i)
+
+        console.log("The File:", tempFiles, "does not exist")
+        console.log("putting", tempfile, "into Stored Files");
+        // setFiles(         //run setFiles so that storedFiles is updated
+        //   files.map(file => {
+        //     return {
+        //       Name: file.name,
+        //       NameParts: file.name.split("_"),
+        //       Link: window.URL.createObjectURL(file)
+        //     };
+        //   })
+        // );
       }
     })
   };
+  console.log("Whole File:", wholeFile)
+  console.log("Stored Files", storedFiles);
 
 
 
