@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import EditTable from "./EditTable";
 
-const createExpenseReport = () => {};
+const createExpenseReport = () => { };
 // const createExpenseReport = () =>
 //   this.setState({
 //     data: [...this.state.data, createExpenseReport]
@@ -17,7 +17,7 @@ class App extends Component {
     // function App() {   MUIZZ
     return (
       <div className="App">
-        <form onSubmit={createExpenseReport}> </form> 
+        <form onSubmit={createExpenseReport}> </form>
         <form
         // onSubmit={createExpenseReport =>
         //   this.setState({
@@ -25,9 +25,9 @@ class App extends Component {
         //   })
         // }
         ></form>
-                 
+
         {/* <RepliconTable /> */}
-         
+
         <EditTable
           data={this.state.data}
           header={[

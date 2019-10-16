@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { DropzoneArea } from "material-ui-dropzone";
+import Dropzone from "react-dropzone";
+
 
 export default function UploadReceipts(props) {
   const [open, setOpen] = useState();
@@ -17,6 +19,9 @@ export default function UploadReceipts(props) {
   const handleOpen = () => {
     setOpen(true);
   };
+
+
+
 
   return (
     <div>
