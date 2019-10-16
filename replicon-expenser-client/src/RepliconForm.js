@@ -1,204 +1,211 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
+import FormControl from 'react-bootstrap/FormControl'
+
 
 export default function RepliconForm(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [encodedPassword, setEncodedPassword] = useState("");
+  // const [encodedPassword, setEncodedPassword] = useState("");
   const [client, setClient] = useState("");
   const [project, setProject] = useState("");
   const [description, setDescription] = useState("");
-
-
+  const [valid, setValid] = useState(false);
+  const [errors, setErrors] = useState({
+    emailError: "",
+    passwordError: "",
+    descriptionError: "",
+    clientError: "",
+    projectError: ""
+  });
+  const [initialState, setInitialState] = useState({
+    email: "",
+    password: "",
+    description: "",
+    client: "",
+    project: ""
+  });
 
   const handleEmailChange = event => {
     setEmail(event.target.value);
   };
-
   const handlePasswordChange = event => {
     setPassword(event.target.value);
   };
-
   const handleClientChange = event => {
     setClient(event.target.value);
   };
-
   const handleProjectChange = event => {
     setProject(event.target.value);
   };
-
   const handleDescriptionChange = event => {
     setDescription(event.target.value);
   };
 
-  const handleSubmit = event => {
-    event.preventDefault();
+  const validate = event => {
+    let isError = false;
+    // const errors = {
+    //   emailError: "Email must include an '@'",
+    //   passwordError: "",
+    //   descriptionError: "",
+    //   clientError: "",
+    //   projectError: ""
+    // };
 
-    let files = props.wholeFile;
-
-    let formData = new FormData()
-
-    formData.append("email", email);    //"muizz.soomar@credera.com"
-    formData.append("password", password);    //"RkBzdGNhcnMxMjM0"
-    for (var x = 0; x < files.length; x++) {
-      formData.append("receipts", files[x]);
-      console.log("File num:" + x);
+    if (!email.includes("@")) {
+      //alert("Email must include an '@'");
+      return !isError;
     }
-    formData.append("description", description);    //"Muizz is this going to wwork"
-    formData.append("client", client);    //"G&A"
-    formData.append("project", project);    //"Training"
-    const response = axios({
-      method: 'post',
-      url: 'http://localhost:3005/api/create-expense-report',
-      data: formData
-    })
+
+    if (!password > 0) {
+      //alert("Password is empty");
+      return !isError;
+    }
+
+    if (!description > 0) {
+      //alert("Description is empty");
+      return !isError;
+    }
+
+    if (!client > 0) {
+      //alert("Client is empty");
+      return !isError;
+    }
+
+    if (!project > 0) {
+      //alert("Project is empty");
+      return !isError;
+    }
+
+    if (isError === false) {
+      setEmail("");
+      setPassword("");
+      setDescription("");
+      setClient("");
+      setProject("");
+    }
+
+    return isError;
+
   };
 
+  const handleSubmit = event => {
+    // alert("CLICKED");
+    event.preventDefault();
+    const isValid = validate(event);
+
+    // const form = event.currentTarget;
+    // if (form.checkValidity() === false) {
+    //   event.preventDefault();
+    //   event.stopPropagation();
+    // }
+
+    if (!isValid) {
+      let files = props.wholeFile;
+      let formData = new FormData();
+      formData.append("email", email); //"muizz.soomar@credera.com"
+      formData.append("password", password); //"RkBzdGNhcnMxMjM0"
+      for (var x = 0; x < files.length; x++) {
+        formData.append("receipts", files[x]);
+        console.log("File num:" + x);
+      }
+      formData.append("description", description); //"Muizz is this going to wwork"
+      formData.append("client", client); //"G&A"
+      formData.append("project", project); //"Training"
+      const response = axios({
+        method: "post",
+        url: "http://localhost:3005/api/create-expense-report",
+        data: formData
+      });
+      setValid(true);
+    }
+  };
   return (
     <div>
-      <Form onSubmit={handleSubmit}>
+      <Form noValidate onSubmit={handleSubmit} valid={valid}>
         <Form.Group controlId="email" bssize="large">
-          <label> Email </label>{" "}
+          <Form.Label> Email </Form.Label>{" "}
           <Form.Control
             autoFocus
-            placeholder="email"
+            placeholder="Email"
             type="email"
             value={email}
             onChange={handleEmailChange}
+            required
+            // isValid={errors.emailError}
           />{" "}
+          <Form.Control.Feedback type="invalid">
+            Email must include an "@".
+          </Form.Control.Feedback>
           <br />
         </Form.Group>{" "}
-        <Form.Group controlId="password" bssize="large">
-          <label> Password </label>{" "}
+        <Form.Group controlId="password" bssize="large" >
+          <Form.Label> Password </Form.Label>{" "}
           <Form.Control
-            placeholder="password"
+            placeholder="Password"
             value={password}
             onChange={handlePasswordChange}
             type="password"
+            required
+            // isValid= {errors.passwordError}
           />
+          <Form.Control.Feedback type="valid">
+            Please input a password.
+          </Form.Control.Feedback>
           <br />
         </Form.Group>{" "}
         <Form.Group controlId="description" bssize="large">
-          <label> Description </label>{" "}
+          <Form.Label> Description </Form.Label>{" "}
           <Form.Control
-            placeholder="description"
+            placeholder="Description"
             value={description}
             onChange={handleDescriptionChange}
             type="description"
+            isInvalid= {description.length > 0}
           />
+          <Form.Control.Feedback type="invalid">
+            Please input a description.
+          </Form.Control.Feedback>
           <br />
         </Form.Group>{" "}
         <Form.Group controlId="client" bssize="large">
-          <label> Client </label>{" "}
+          <Form.Label> Client </Form.Label>{" "}
           <Form.Control
-            placeholder="client"
+            placeholder="Client"
             value={client}
             onChange={handleClientChange}
             type="client"
+            required
+            // isValid = {errors.clientError}
           />
+          <Form.Control.Feedback type="invalid">
+            Please input a client.
+          </Form.Control.Feedback>
           <br />
         </Form.Group>{" "}
         <Form.Group controlId="project" bssize="large">
-          <label> Project </label>{" "}
+          <Form.Label> Project </Form.Label>{" "}
           <Form.Control
-            placeholder="project"
+            placeholder="Project"
             value={project}
             onChange={handleProjectChange}
             type="project"
+            required
+            // isValid = {errors.projectError}
           />
+          <Form.Control.Feedback type="invalid">
+            Please input a project.
+          </Form.Control.Feedback>
           <br />
         </Form.Group>{" "}
+        {/* <div class="text text-danger" role="alert" color={red}>
+          {" "}
+          <strong>Muizz wants me to do this</strong>
+        </div> */}
         <button onClick={e => handleSubmit(e)}> Submit </button>{" "}
+        {/* <button type="submit">Submit</button> */}
       </Form>{" "}
     </div>
   );
 }
-// export default class RepliconForm extends Component {
-//   constructor(props) {
-//     super(props);
-
-//     this.state = {
-      // email: "",
-      // password: "",
-      // description: "",
-      // client: "",
-      // project: ""
-//     };
-//   }
-
-//   validateForm() {
-//     return (
-//       this.state.email.length > 0 &&
-//       this.state.password.length > 0 &&
-//       this.state.description.length > 0 &&
-//       this.state.client.length > 0 &&
-//       this.state.project.length > 0
-//     );
-//   }
-
-//   handleChange = event => {
-//     this.setState({
-//       [event.target.id]: event.target.value
-//     });
-//   };
-
-//   handleSubmit = event => {
-//     event.preventDefault();
-//   };
-
-//   render() {
-//     return (
-//       <div className="RepliconForm">
-//         <Form onSubmit={this.handleSubmit}>
-//           <Form.Group controlId="email" bsSize="large">
-//             <label>Email </label>
-//             <Form.Control
-//               autoFocus
-//               type="email"
-//               value={this.state.email}
-//               onChange={this.handleChange}
-//             />
-//             <br />
-//           </Form.Group>
-//           <Form.Group controlId="password" bsSize="large">
-//             <label>Password</label>
-//             <Form.Control
-//               value={this.state.password}
-//               onChange={this.handleChange}
-//               type="password"
-//             />
-//             <br />
-//           </Form.Group>
-//           <Form.Group controlId="description" bsSize="large">
-//             <label>Description</label>
-//             <Form.Control
-//               value={this.state.description}
-//               onChange={this.handleChange}
-//               type="description"
-//             />
-//             <br />
-//           </Form.Group>
-//           <Form.Group controlId="client" bsSize="large">
-//             <label>Client</label>
-//             <Form.Control
-//               value={this.state.client}
-//               onChange={this.handleChange}
-//               type="client"
-//             />
-//             <br />
-//           </Form.Group>
-//           <Form.Group controlId="project" bsSize="large">
-//             <label>Project</label>
-//             <Form.Control
-//               value={this.state.project}
-//               onChange={this.handleChange}
-//               type="project"
-//             />
-//             <br />
-//           </Form.Group>
-//         </Form>
-//       </div>
-//     );
-//   }
-// }

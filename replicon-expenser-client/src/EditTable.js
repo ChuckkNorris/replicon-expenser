@@ -7,11 +7,11 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import ReceiptUpload from "./ReceiptUpload";
-
 import FilePreview from "./FilePreview";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import RepliconForm from "./RepliconForm";
+
 
 
 const useStyles = makeStyles(theme => ({
@@ -35,23 +35,26 @@ export default ({ data, header }) => {
   const [editFiles, setEditFiles] = useState([]);
 
 
+
   const callBackFromTable = files => {
     // setWholeFile(files);
 
 
-    setTempFiles(files);
-    console.log("this is the files:", files)
+    // setTempFiles(files);
+    // console.log("this is the files:", tempFiles)
+    
+  
 
     files.map((tempfile, i) => {
       if (!tempFiles.filter(x => x.name === tempfile.name).length >= 1) {
-        alert("yay it should be here")
+        alert("in the IF statement")
         console.log("index on outer map", i)
         console.log("here is tempfile, what we are using to check (main):", tempfile)
         console.log("The File:", tempFiles, "already exists")
-
         setWholeFile(files);
+        
 
-        setFiles(         //run setFiles so that storedFiles is updated
+        setFiles(  //run setFiles so that storedFiles is updated
           files.map((file, i) => {
             console.log("index on inner map", i);
             return {
@@ -61,7 +64,7 @@ export default ({ data, header }) => {
             };
           })
         );
-
+          console.log("STORED FILES", storedFiles)
 
       } else {
         alert('went into else')
@@ -98,6 +101,13 @@ export default ({ data, header }) => {
     console.log("Index: ", index);
   };
 
+  // const handleValidate = () => {
+  //   if (!file.NameParts[1] == "Meal") {
+  //     alert("Doesn't equal Meal")
+  //   } 
+  //   console.log("handling validation")
+  // }
+
 
   const handleEdit = (index, file) => {
     var editFile = [...storedFiles];
@@ -106,8 +116,6 @@ export default ({ data, header }) => {
     setFiles(editFiles)
     console.log("this should be populated", storedFiles);
     console.log("editFile:", editFile[index])
-
-
   };
 
 
@@ -125,26 +133,26 @@ export default ({ data, header }) => {
             <TableRow>
               {" "}
               {header.map((x, i) => (
-                <TableCell key={`thc-${i}`}> {x.name} </TableCell>
+                <TableCell align="center" key={`thc-${i}`}> {x.name} </TableCell>
               ))}{" "}
             </TableRow>{" "}
           </TableHead>
           {storedFiles.map((file, index) => (
-            <TableRow>
-              <TableCell align="right"> {file.NameParts[0]} </TableCell>{" "}
-              <TableCell align="right"> {file.NameParts[1]} </TableCell>{" "}
-              <TableCell align="right"> {file.NameParts[2]} </TableCell>{" "}
-              <TableCell align="right"> {file.NameParts[3]} </TableCell>{" "}
-              <TableCell align="right">
+            <TableRow hover>
+              <TableCell align="center"> {file.NameParts[0]} </TableCell>{" "}
+              <TableCell align="center"> {file.NameParts[1]} </TableCell>{" "}
+              <TableCell align="center"> {file.NameParts[2]} </TableCell>{" "}
+              <TableCell align="center"> {file.NameParts[3]} </TableCell>{" "}
+              <TableCell align="center">
                 {" "}
                 {"$" + parseFloat(file.NameParts[4]).toFixed(2)}{" "}
               </TableCell>{" "}
-              <TableCell>
-                <FilePreview fileLink={file.Link} fileName={file.Name} />{" "}
+              <TableCell align="center">
+                <FilePreview align="center" fileLink={file.Link} fileName={file.Name} />{" "}
               </TableCell>{" "}
-              <TableCell>
+              <TableCell align="center">
                 {/* <EditIcon onClick={() => handleEdit(index, storedFiles)} /> */}
-                <EditIcon onClick={() => handleEdit(index, storedFiles)} />
+                {/* <EditIcon onClick={() => handleEdit(index, storedFiles)} /> */}
                 <DeleteIcon onClick={() => handleDelete(index, storedFiles)} />
               </TableCell>
             </TableRow>
