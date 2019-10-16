@@ -13,12 +13,16 @@ export default function RepliconForm(props) {
   const [description, setDescription] = useState("");
   const [valid, setValid] = useState(false);
   const [errors, setErrors] = useState({
-    emailError: "",
     passwordError: "",
     descriptionError: "",
     clientError: "",
     projectError: ""
   });
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [descriptionError, setDescriptionError] = useState('');
+  const [clientError, setClientError] = useState('');
+  const [projectError, setProjectError] = useState('');
   const [initialState, setInitialState] = useState({
     email: "",
     password: "",
@@ -43,8 +47,14 @@ export default function RepliconForm(props) {
     setDescription(event.target.value);
   };
 
+  let isError = false;
   const validate = event => {
-    let isError = false;
+    
+    let emailError = "";
+    let passwordError = "";
+    let descriptionError = "";
+    let clientError = "";
+    let projectError = "";
     // const errors = {
     //   emailError: "Email must include an '@'",
     //   passwordError: "",
@@ -55,27 +65,37 @@ export default function RepliconForm(props) {
 
     if (!email.includes("@")) {
       //alert("Email must include an '@'");
-      return !isError;
+      setEmailError("Email must include an '@'")
+      // return !isError;
     }
 
     if (!password > 0) {
       //alert("Password is empty");
-      return !isError;
+      setPasswordError("Please input a password")
+      // return !isError;
     }
 
     if (!description > 0) {
       //alert("Description is empty");
-      return !isError;
+      setDescriptionError("Please input a description")
+      // return !isError;
     }
 
     if (!client > 0) {
       //alert("Client is empty");
-      return !isError;
+      setClientError("Please input a client")
+      // return !isError;
     }
 
     if (!project > 0) {
       //alert("Project is empty");
-      return !isError;
+      setProjectError("Please input a project")
+      // return !isError;
+    }
+
+    if (!email.includes("@") || (!password > 0) || (!description > 0) || (!client > 0)|| (!project > 0)) {
+      
+      return !isError
     }
 
     if (isError === false) {
@@ -91,6 +111,13 @@ export default function RepliconForm(props) {
   };
 
   const handleSubmit = event => {
+    if (isError === false) {
+      setEmailError("");
+      setPasswordError("");
+      setDescriptionError("");
+      setClientError("");
+      setProjectError("");
+    }
     // alert("CLICKED");
     event.preventDefault();
     const isValid = validate(event);
@@ -100,7 +127,7 @@ export default function RepliconForm(props) {
     //   event.preventDefault();
     //   event.stopPropagation();
     // }
-
+     
     if (!isValid) {
       let files = props.wholeFile;
       let formData = new FormData();
@@ -126,7 +153,7 @@ export default function RepliconForm(props) {
       <Form noValidate onSubmit={handleSubmit} valid={valid}>
         <Form.Group controlId="email" bssize="large">
           <Form.Label> Email </Form.Label>{" "}
-          <Form.Control
+          <input
             autoFocus
             placeholder="Email"
             type="email"
@@ -135,14 +162,15 @@ export default function RepliconForm(props) {
             required
             // isValid={errors.emailError}
           />{" "}
-          <Form.Control.Feedback type="invalid">
+          <div style={{ color: 'red' }}>{emailError}</div>
+          {/* <Form.Control.Feedback type="invalid">
             Email must include an "@".
-          </Form.Control.Feedback>
+          </Form.Control.Feedback> */}
           <br />
         </Form.Group>{" "}
         <Form.Group controlId="password" bssize="large" >
           <Form.Label> Password </Form.Label>{" "}
-          <Form.Control
+          <input
             placeholder="Password"
             value={password}
             onChange={handlePasswordChange}
@@ -150,28 +178,30 @@ export default function RepliconForm(props) {
             required
             // isValid= {errors.passwordError}
           />
-          <Form.Control.Feedback type="valid">
+          <div style={{ color: 'red' }}>{passwordError}</div>
+          {/* <Form.Control.Feedback type="valid">
             Please input a password.
-          </Form.Control.Feedback>
+          </Form.Control.Feedback> */}
           <br />
         </Form.Group>{" "}
         <Form.Group controlId="description" bssize="large">
           <Form.Label> Description </Form.Label>{" "}
-          <Form.Control
+          <input
             placeholder="Description"
             value={description}
             onChange={handleDescriptionChange}
             type="description"
             isInvalid= {description.length > 0}
           />
-          <Form.Control.Feedback type="invalid">
+          <div style={{ color: 'red' }}>{descriptionError}</div>
+          {/* <Form.Control.Feedback type="invalid">
             Please input a description.
-          </Form.Control.Feedback>
+          </Form.Control.Feedback> */}
           <br />
         </Form.Group>{" "}
         <Form.Group controlId="client" bssize="large">
           <Form.Label> Client </Form.Label>{" "}
-          <Form.Control
+          <input
             placeholder="Client"
             value={client}
             onChange={handleClientChange}
@@ -179,14 +209,15 @@ export default function RepliconForm(props) {
             required
             // isValid = {errors.clientError}
           />
-          <Form.Control.Feedback type="invalid">
+          <div style={{ color: 'red' }}>{clientError}</div>
+          {/* <Form.Control.Feedback type="invalid">
             Please input a client.
-          </Form.Control.Feedback>
+          </Form.Control.Feedback> */}
           <br />
         </Form.Group>{" "}
         <Form.Group controlId="project" bssize="large">
           <Form.Label> Project </Form.Label>{" "}
-          <Form.Control
+          <input
             placeholder="Project"
             value={project}
             onChange={handleProjectChange}
@@ -194,9 +225,10 @@ export default function RepliconForm(props) {
             required
             // isValid = {errors.projectError}
           />
-          <Form.Control.Feedback type="invalid">
+          <div style={{ color: 'red' }}>{projectError}</div>
+          {/* <Form.Control.Feedback type="invalid">
             Please input a project.
-          </Form.Control.Feedback>
+          </Form.Control.Feedback> */}
           <br />
         </Form.Group>{" "}
         {/* <div class="text text-danger" role="alert" color={red}>
