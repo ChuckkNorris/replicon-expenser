@@ -29,6 +29,7 @@ const createRepliconExpenser = context => {
     await page.setValue("[type=password]", password);
     context.log(`Submitting password...`);
     await page.clickAndWaitNetwork("[type=submit]");
+    await page.clickAndWaitNetwork("[type=submit]");
     context.log(`Checking for 'Stay signed in' page`);
     const staySignedInText = await page.getInnerText("#KmsiDescription");
     context.log("Stay signed in text... ", staySignedInText);
