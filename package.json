@@ -18,7 +18,7 @@
     "lodash": "^4.17.15",
     "material-table": "^1.50.0",
     "material-ui-dropzone": "^2.4.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "puppeteer": "1.19.0",
     "react-filepond": "^7.0.1",
     "react-popup": "^0.10.0",
